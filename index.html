@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>ゲーム時間バンク</title>
+  <title>Game Time Bank</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
   <style>
@@ -18,7 +18,7 @@
     @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
     .kid-card { border-radius: 26px; padding: 28px 26px 22px; margin-bottom: 18px; position: relative; overflow: hidden; box-shadow: 0 6px 28px rgba(0,0,0,0.14); }
     .kid-card.yuwa { background: linear-gradient(135deg, #667eea, #764ba2); }
-    .kid-card.yuuki { background: linear-gradient(135deg, #f093fb, #f5576c); }
+    .kid-card.yuuki { background: linear-gradient(135deg, #f7971e, #fd7c07); }
     .card-bg-icon { position: absolute; right: -10px; top: -10px; font-size: 100px; opacity: 0.1; pointer-events: none; }
     .kid-name { font-size: 22px; font-weight: 900; color: rgba(255,255,255,0.9); margin-bottom: 6px; }
     .kid-multiplier { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.18); display: inline-block; padding: 3px 12px; border-radius: 20px; margin-bottom: 16px; }
@@ -43,7 +43,7 @@
     .log-item:last-child { border-bottom: none; padding-bottom: 0; }
     .log-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
     .log-dot.yuwa { background: #764ba2; }
-    .log-dot.yuuki { background: #f5576c; }
+    .log-dot.yuuki { background: #fd7c07; }
     .log-text { flex: 1; color: #333; font-weight: 700; }
     .log-delta { font-weight: 900; font-size: 17px; }
     .log-delta.plus { color: #22c55e; }
@@ -57,7 +57,7 @@
 <body>
 <div id="app">
   <div class="header">
-    <h1>🎮 ゲーム時間バンク</h1>
+    <h1>🎮 Game Time Bank</h1>
     <p>ゆうわ ×1.2倍 ／ ゆうき ×1.5倍（毎日自動・5分単位切り上げ）</p>
   </div>
   <div class="bonus-applied" id="bonus-banner"></div>
