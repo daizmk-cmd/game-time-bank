@@ -8,82 +8,125 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Nunito', sans-serif; background: #f4f3ff; min-height: 100vh; padding: 20px; }
-    #app { max-width: 700px; margin: 0 auto; }
-    .header { position: relative; text-align: center; padding: 24px 0 26px; }
-    .header h1 { font-size: 38px; font-weight: 900; color: #2d2d4e; }
-    .header p { font-size: 16px; color: #888; font-weight: 700; margin-top: 6px; }
-    .reload-btn {
-      position: absolute; top: 24px; right: 0;
-      border: none; background: rgba(45,45,78,0.1); border-radius: 50%;
-      width: 48px; height: 48px; font-size: 22px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: transform 0.3s ease, background 0.2s;
-    }
-    .reload-btn:hover { background: rgba(45,45,78,0.18); }
-    .reload-btn:active { transform: rotate(180deg); }
-    .bonus-applied { display: none; background: #f0fdf4; border: 2px solid #86efac; border-radius: 16px; padding: 16px 20px; margin-bottom: 18px; text-align: center; font-size: 18px; font-weight: 800; color: #166534; animation: fadeIn 0.4s ease; }
+    body { font-family: 'Nunito', sans-serif; background: #f4f3ff; min-height: 100vh; }
+    #app { margin: 0 auto; }
+    .bonus-applied { display: none; background: #f0fdf4; border: 2px solid #86efac; border-radius: 16px; padding: 12px 16px; margin-bottom: 14px; text-align: center; font-weight: 800; color: #166534; animation: fadeIn 0.4s ease; }
     .bonus-applied.show { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
-    .kid-card { border-radius: 26px; padding: 28px 26px 22px; margin-bottom: 18px; position: relative; overflow: hidden; box-shadow: 0 6px 28px rgba(0,0,0,0.14); }
+    .kid-card { border-radius: 24px; position: relative; overflow: hidden; box-shadow: 0 6px 28px rgba(0,0,0,0.14); }
     .kid-card.yuwa { background: linear-gradient(135deg, #667eea, #764ba2); }
     .kid-card.yuuki { background: linear-gradient(135deg, #f7971e, #fd7c07); }
-    .card-bg-icon { position: absolute; right: -10px; top: -10px; font-size: 100px; opacity: 0.1; pointer-events: none; }
-    .kid-name { font-size: 22px; font-weight: 900; color: rgba(255,255,255,0.9); margin-bottom: 6px; }
-    .kid-multiplier { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.18); display: inline-block; padding: 3px 12px; border-radius: 20px; margin-bottom: 16px; }
-    .kid-time { font-size: 80px; font-weight: 900; color: #fff; line-height: 1; letter-spacing: -3px; }
-    .kid-time-unit { font-size: 26px; font-weight: 700; color: rgba(255,255,255,0.8); margin-left: 6px; }
-    .action-area { margin-top: 22px; }
-    .action-tabs { display: flex; gap: 8px; margin-bottom: 12px; }
-    .tab-btn { flex: 1; border: none; border-radius: 14px; padding: 14px 0; font-family: 'Nunito', sans-serif; font-size: 20px; font-weight: 900; cursor: pointer; transition: all 0.15s; }
+    .card-bg-icon { position: absolute; right: -10px; top: -10px; opacity: 0.1; pointer-events: none; }
+    .kid-name { font-weight: 900; color: rgba(255,255,255,0.9); }
+    .kid-multiplier { font-weight: 700; color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.18); display: inline-block; border-radius: 20px; }
+    .kid-time { font-weight: 900; color: #fff; line-height: 1; letter-spacing: -3px; }
+    .kid-time-unit { font-weight: 700; color: rgba(255,255,255,0.8); }
+    .tab-btn { flex: 1; border: none; border-radius: 14px; font-family: 'Nunito', sans-serif; font-weight: 900; cursor: pointer; transition: all 0.15s; }
     .add-tab { background: rgba(255,255,255,0.22); color: #fff; }
     .use-tab { background: rgba(0,0,0,0.22); color: #fff; }
     .add-tab.active { background: #fff; color: #764ba2; }
     .use-tab.active { background: rgba(0,0,0,0.52); color: #fff; }
-    .mins-picker { display: none; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .mins-picker { display: none; gap: 8px; }
     .mins-picker.visible { display: grid; }
-    .min-btn { border: none; border-radius: 12px; padding: 0; height: 60px; font-family: 'Nunito', sans-serif; font-size: 19px; font-weight: 900; cursor: pointer; transition: transform 0.1s; width: 100%; }
+    .min-btn { border: none; border-radius: 12px; font-family: 'Nunito', sans-serif; font-weight: 900; cursor: pointer; transition: transform 0.1s; width: 100%; }
     .min-btn:active { transform: scale(0.91); }
     .add-picker .min-btn { background: rgba(255,255,255,0.88); color: #444; }
     .use-picker .min-btn { background: rgba(0,0,0,0.32); color: #fff; }
-    .drum-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; grid-column: 1 / -1; }
+    .drum-row { display: flex; align-items: flex-end; gap: 8px; margin-top: 10px; grid-column: 1 / -1; }
     .drum-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
     .drum-label { font-size: 12px; font-weight: 800; color: rgba(255,255,255,0.6); }
-    .drum-scroll {
-      width: 100%; height: 72px; overflow-y: scroll; border-radius: 12px;
-      scroll-snap-type: y mandatory; scrollbar-width: none;
-      background: rgba(255,255,255,0.15);
-    }
+    .drum-scroll { width: 100%; overflow-y: scroll; border-radius: 12px; scroll-snap-type: y mandatory; scrollbar-width: none; background: rgba(255,255,255,0.15); }
     .drum-scroll::-webkit-scrollbar { display: none; }
-    .drum-item {
-      height: 72px; display: flex; align-items: center; justify-content: center;
-      scroll-snap-align: start; font-size: 28px; font-weight: 900; color: #fff;
-      cursor: pointer;
-    }
-    .drum-sep { font-size: 28px; font-weight: 900; color: rgba(255,255,255,0.8); padding-top: 16px; align-self: flex-end; padding-bottom: 16px; }
-    .drum-confirm-btn {
-      border: none; border-radius: 12px; padding: 0 20px; height: 72px;
-      font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 900;
-      cursor: pointer; transition: transform 0.1s; white-space: nowrap; align-self: flex-end;
-    }
+    .drum-item { display: flex; align-items: center; justify-content: center; scroll-snap-align: start; font-weight: 900; color: #fff; cursor: pointer; }
+    .drum-sep { font-weight: 900; color: rgba(255,255,255,0.8); }
+    .drum-confirm-btn { border: none; border-radius: 12px; font-family: 'Nunito', sans-serif; font-weight: 900; cursor: pointer; transition: transform 0.1s; white-space: nowrap; }
     .drum-confirm-btn:active { transform: scale(0.91); }
     .add-picker .drum-confirm-btn { background: rgba(255,255,255,0.88); color: #444; }
     .use-picker .drum-confirm-btn { background: rgba(0,0,0,0.32); color: #fff; }
-    .log-section { background: #fff; border-radius: 22px; padding: 20px 22px; box-shadow: 0 2px 14px rgba(0,0,0,0.07); }
-    .log-title { font-size: 14px; font-weight: 900; color: #aaa; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; }
-    .log-item { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 0.5px solid #f0f0f0; font-size: 16px; }
+    .log-section { background: #fff; border-radius: 20px; box-shadow: 0 2px 14px rgba(0,0,0,0.07); }
+    .log-title { font-weight: 900; color: #aaa; text-transform: uppercase; letter-spacing: 0.8px; }
+    .log-item { display: flex; align-items: center; gap: 8px; border-bottom: 0.5px solid #f0f0f0; }
     .log-item:last-child { border-bottom: none; padding-bottom: 0; }
-    .log-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+    .log-dot { border-radius: 50%; flex-shrink: 0; }
     .log-dot.yuwa { background: #764ba2; }
     .log-dot.yuuki { background: #fd7c07; }
     .log-text { flex: 1; color: #333; font-weight: 700; }
-    .log-delta { font-weight: 900; font-size: 17px; }
+    .log-delta { font-weight: 900; }
     .log-delta.plus { color: #22c55e; }
     .log-delta.minus { color: #ef4444; }
-    .log-ts { font-size: 13px; color: #bbb; font-weight: 700; }
-    .empty-log { text-align: center; padding: 16px 0; color: #ccc; font-size: 16px; font-weight: 700; }
-    .toast { position: fixed; top: 22px; left: 50%; transform: translateX(-50%) translateY(-80px); background: #2d2d4e; color: #fff; padding: 14px 30px; border-radius: 999px; font-size: 18px; font-weight: 800; transition: transform 0.3s ease; z-index: 999; white-space: nowrap; pointer-events: none; }
+    .log-ts { color: #bbb; font-weight: 700; }
+    .empty-log { text-align: center; color: #ccc; font-weight: 700; }
+    .toast { position: fixed; top: 18px; left: 50%; transform: translateX(-50%) translateY(-80px); background: #2d2d4e; color: #fff; border-radius: 999px; font-weight: 800; transition: transform 0.3s ease; z-index: 999; white-space: nowrap; pointer-events: none; }
     .toast.show { transform: translateX(-50%) translateY(0); }
+    @media (min-width: 800px) {
+      body { padding: 20px; }
+      #app { max-width: 900px; }
+      .bonus-applied { font-size: 18px; margin-bottom: 16px; }
+      .header { position: relative; text-align: center; padding: 20px 0 24px; }
+      .header h1 { font-size: 40px; font-weight: 900; color: #2d2d4e; }
+      .header p { font-size: 16px; color: #888; font-weight: 700; margin-top: 6px; }
+      .reload-btn { position: absolute; top: 20px; right: 0; border: none; background: rgba(45,45,78,0.1); border-radius: 50%; width: 52px; height: 52px; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.3s ease, background 0.2s; }
+      .reload-btn:hover { background: rgba(45,45,78,0.18); }
+      .reload-btn:active { transform: rotate(180deg); }
+      .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+      .kid-card { padding: 26px 24px 20px; }
+      .card-bg-icon { font-size: 100px; }
+      .kid-name { font-size: 22px; margin-bottom: 6px; }
+      .kid-multiplier { font-size: 13px; padding: 3px 12px; margin-bottom: 14px; }
+      .kid-time { font-size: 76px; }
+      .kid-time-unit { font-size: 24px; margin-left: 5px; }
+      .action-area { margin-top: 20px; }
+      .action-tabs { display: flex; gap: 8px; margin-bottom: 10px; }
+      .tab-btn { padding: 12px 0; font-size: 19px; }
+      .mins-picker { grid-template-columns: repeat(4, 1fr); }
+      .min-btn { height: 56px; font-size: 18px; }
+      .drum-scroll { height: 64px; }
+      .drum-item { height: 64px; font-size: 26px; }
+      .drum-sep { font-size: 26px; padding-bottom: 10px; }
+      .drum-confirm-btn { height: 64px; padding: 0 16px; font-size: 16px; }
+      .log-section { padding: 18px 20px; }
+      .log-title { font-size: 13px; margin-bottom: 10px; }
+      .log-item { font-size: 15px; padding: 8px 0; gap: 10px; }
+      .log-dot { width: 9px; height: 9px; }
+      .log-delta { font-size: 16px; }
+      .log-ts { font-size: 12px; }
+      .empty-log { font-size: 15px; padding: 14px 0; }
+      .toast { font-size: 18px; padding: 14px 28px; }
+    }
+    @media (max-width: 799px) {
+      body { padding: 0; }
+      #app { max-width: 100%; padding: 0; }
+      .bonus-applied { font-size: 14px; margin: 10px 14px; border-radius: 12px; padding: 10px 14px; }
+      .header { position: relative; text-align: center; padding: 18px 16px 14px; background: #fff; border-bottom: 1px solid #ebebeb; }
+      .header h1 { font-size: 26px; font-weight: 900; color: #2d2d4e; }
+      .header p { font-size: 12px; color: #888; font-weight: 700; margin-top: 4px; }
+      .reload-btn { position: absolute; top: 16px; right: 16px; border: none; background: rgba(45,45,78,0.08); border-radius: 50%; width: 40px; height: 40px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.3s ease; }
+      .reload-btn:active { transform: rotate(180deg); }
+      .cards-grid { display: flex; flex-direction: column; gap: 0; }
+      .kid-card { border-radius: 0; margin-bottom: 8px; padding: 18px 16px 14px; box-shadow: none; border-bottom: 3px solid rgba(0,0,0,0.08); }
+      .card-bg-icon { font-size: 72px; }
+      .kid-name { font-size: 17px; margin-bottom: 4px; }
+      .kid-multiplier { font-size: 11px; padding: 2px 9px; margin-bottom: 12px; }
+      .kid-time { font-size: 58px; }
+      .kid-time-unit { font-size: 20px; margin-left: 4px; }
+      .action-area { margin-top: 14px; }
+      .action-tabs { display: flex; gap: 6px; margin-bottom: 8px; }
+      .tab-btn { padding: 11px 0; font-size: 16px; }
+      .mins-picker { grid-template-columns: repeat(4, 1fr); gap: 6px; }
+      .min-btn { height: 50px; font-size: 16px; }
+      .drum-scroll { height: 56px; }
+      .drum-item { height: 56px; font-size: 22px; }
+      .drum-sep { font-size: 22px; padding-bottom: 8px; }
+      .drum-confirm-btn { height: 56px; padding: 0 12px; font-size: 14px; }
+      .log-section { margin: 8px 14px 20px; border-radius: 16px; padding: 14px 16px; }
+      .log-title { font-size: 11px; margin-bottom: 8px; }
+      .log-item { font-size: 13px; padding: 7px 0; gap: 8px; }
+      .log-dot { width: 7px; height: 7px; }
+      .log-delta { font-size: 14px; }
+      .log-ts { font-size: 11px; }
+      .empty-log { font-size: 13px; padding: 12px 0; }
+      .toast { font-size: 14px; padding: 10px 22px; }
+    }
   </style>
 </head>
 <body>
@@ -91,77 +134,79 @@
   <div class="header">
     <h1>🎮 Game Time Bank</h1>
     <p>ゆうわ ×1.2倍 ／ ゆうき ×1.5倍（毎日自動・5分単位切り上げ）</p>
-    <button class="reload-btn" onclick="location.reload()" title="リロード">🔄</button>
+    <button class="reload-btn" onclick="location.reload()">🔄</button>
   </div>
   <div class="bonus-applied" id="bonus-banner"></div>
-  <div class="kid-card yuwa">
-    <div class="card-bg-icon">⭐</div>
-    <div class="kid-name">ゆうわ</div>
-    <div class="kid-multiplier">毎晩 ×1.2</div><br>
-    <span class="kid-time" id="yuwa-time">0</span><span class="kid-time-unit">分</span>
-    <div class="action-area">
-      <div class="action-tabs">
-        <button class="tab-btn add-tab" id="yuwa-add-tab" onclick="selectTab('yuwa','add')">＋ 追加</button>
-        <button class="tab-btn use-tab" id="yuwa-use-tab" onclick="selectTab('yuwa','use')">▶ 使う</button>
-      </div>
-      <div class="mins-picker add-picker" id="yuwa-add-picker">
-        <button class="min-btn" onclick="changeTime('yuwa',5,'add')">5分</button>
-        <button class="min-btn" onclick="changeTime('yuwa',10,'add')">10分</button>
-        <button class="min-btn" onclick="changeTime('yuwa',15,'add')">15分</button>
-        <button class="min-btn" onclick="changeTime('yuwa',30,'add')">30分</button>
-        <div class="drum-row">
-          <div class="drum-wrap"><div class="drum-label">十の位</div><div class="drum-scroll" id="yuwa-add-tens"></div></div>
-          <div class="drum-sep">:</div>
-          <div class="drum-wrap"><div class="drum-label">一の位</div><div class="drum-scroll" id="yuwa-add-ones"></div></div>
-          <button class="drum-confirm-btn" onclick="confirmDrum('yuwa','add')">＋追加</button>
+  <div class="cards-grid">
+    <div class="kid-card yuwa">
+      <div class="card-bg-icon">⭐</div>
+      <div class="kid-name">ゆうわ</div>
+      <div class="kid-multiplier">毎晩 ×1.2</div><br>
+      <span class="kid-time" id="yuwa-time">0</span><span class="kid-time-unit">分</span>
+      <div class="action-area">
+        <div class="action-tabs">
+          <button class="tab-btn add-tab" id="yuwa-add-tab" onclick="selectTab('yuwa','add')">＋ 追加</button>
+          <button class="tab-btn use-tab" id="yuwa-use-tab" onclick="selectTab('yuwa','use')">▶ 使う</button>
         </div>
-      </div>
-      <div class="mins-picker use-picker" id="yuwa-use-picker">
-        <button class="min-btn" onclick="changeTime('yuwa',15,'use')">15分</button>
-        <button class="min-btn" onclick="changeTime('yuwa',30,'use')">30分</button>
-        <button class="min-btn" onclick="changeTime('yuwa',45,'use')">45分</button>
-        <button class="min-btn" onclick="changeTime('yuwa',60,'use')">60分</button>
-        <div class="drum-row">
-          <div class="drum-wrap"><div class="drum-label">十の位</div><div class="drum-scroll" id="yuwa-use-tens"></div></div>
-          <div class="drum-sep">:</div>
-          <div class="drum-wrap"><div class="drum-label">一の位</div><div class="drum-scroll" id="yuwa-use-ones"></div></div>
-          <button class="drum-confirm-btn" onclick="confirmDrum('yuwa','use')">▶使う</button>
+        <div class="mins-picker add-picker" id="yuwa-add-picker">
+          <button class="min-btn" onclick="changeTime('yuwa',5,'add')">5分</button>
+          <button class="min-btn" onclick="changeTime('yuwa',10,'add')">10分</button>
+          <button class="min-btn" onclick="changeTime('yuwa',15,'add')">15分</button>
+          <button class="min-btn" onclick="changeTime('yuwa',30,'add')">30分</button>
+          <div class="drum-row">
+            <div class="drum-wrap"><div class="drum-label">十の位</div><div class="drum-scroll" id="yuwa-add-tens"></div></div>
+            <div class="drum-sep">:</div>
+            <div class="drum-wrap"><div class="drum-label">一の位</div><div class="drum-scroll" id="yuwa-add-ones"></div></div>
+            <button class="drum-confirm-btn" onclick="confirmDrum('yuwa','add')">＋追加</button>
+          </div>
+        </div>
+        <div class="mins-picker use-picker" id="yuwa-use-picker">
+          <button class="min-btn" onclick="changeTime('yuwa',15,'use')">15分</button>
+          <button class="min-btn" onclick="changeTime('yuwa',30,'use')">30分</button>
+          <button class="min-btn" onclick="changeTime('yuwa',45,'use')">45分</button>
+          <button class="min-btn" onclick="changeTime('yuwa',60,'use')">60分</button>
+          <div class="drum-row">
+            <div class="drum-wrap"><div class="drum-label">十の位</div><div class="drum-scroll" id="yuwa-use-tens"></div></div>
+            <div class="drum-sep">:</div>
+            <div class="drum-wrap"><div class="drum-label">一の位</div><div class="drum-scroll" id="yuwa-use-ones"></div></div>
+            <button class="drum-confirm-btn" onclick="confirmDrum('yuwa','use')">▶使う</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="kid-card yuuki">
-    <div class="card-bg-icon">🌟</div>
-    <div class="kid-name">ゆうき</div>
-    <div class="kid-multiplier">毎晩 ×1.5</div><br>
-    <span class="kid-time" id="yuuki-time">0</span><span class="kid-time-unit">分</span>
-    <div class="action-area">
-      <div class="action-tabs">
-        <button class="tab-btn add-tab" id="yuuki-add-tab" onclick="selectTab('yuuki','add')">＋ 追加</button>
-        <button class="tab-btn use-tab" id="yuuki-use-tab" onclick="selectTab('yuuki','use')">▶ 使う</button>
-      </div>
-      <div class="mins-picker add-picker" id="yuuki-add-picker">
-        <button class="min-btn" onclick="changeTime('yuuki',5,'add')">5分</button>
-        <button class="min-btn" onclick="changeTime('yuuki',10,'add')">10分</button>
-        <button class="min-btn" onclick="changeTime('yuuki',15,'add')">15分</button>
-        <button class="min-btn" onclick="changeTime('yuuki',30,'add')">30分</button>
-        <div class="drum-row">
-          <div class="drum-wrap"><div class="drum-label">十の位</div><div class="drum-scroll" id="yuuki-add-tens"></div></div>
-          <div class="drum-sep">:</div>
-          <div class="drum-wrap"><div class="drum-label">一の位</div><div class="drum-scroll" id="yuuki-add-ones"></div></div>
-          <button class="drum-confirm-btn" onclick="confirmDrum('yuuki','add')">＋追加</button>
+    <div class="kid-card yuuki">
+      <div class="card-bg-icon">🌟</div>
+      <div class="kid-name">ゆうき</div>
+      <div class="kid-multiplier">毎晩 ×1.5</div><br>
+      <span class="kid-time" id="yuuki-time">0</span><span class="kid-time-unit">分</span>
+      <div class="action-area">
+        <div class="action-tabs">
+          <button class="tab-btn add-tab" id="yuuki-add-tab" onclick="selectTab('yuuki','add')">＋ 追加</button>
+          <button class="tab-btn use-tab" id="yuuki-use-tab" onclick="selectTab('yuuki','use')">▶ 使う</button>
         </div>
-      </div>
-      <div class="mins-picker use-picker" id="yuuki-use-picker">
-        <button class="min-btn" onclick="changeTime('yuuki',15,'use')">15分</button>
-        <button class="min-btn" onclick="changeTime('yuuki',30,'use')">30分</button>
-        <button class="min-btn" onclick="changeTime('yuuki',45,'use')">45分</button>
-        <button class="min-btn" onclick="changeTime('yuuki',60,'use')">60分</button>
-        <div class="drum-row">
-          <div class="drum-wrap"><div class="drum-label">十の位</div><div class="drum-scroll" id="yuuki-use-tens"></div></div>
-          <div class="drum-sep">:</div>
-          <div class="drum-wrap"><div class="drum-label">一の位</div><div class="drum-scroll" id="yuuki-use-ones"></div></div>
-          <button class="drum-confirm-btn" onclick="confirmDrum('yuuki','use')">▶使う</button>
+        <div class="mins-picker add-picker" id="yuuki-add-picker">
+          <button class="min-btn" onclick="changeTime('yuuki',5,'add')">5分</button>
+          <button class="min-btn" onclick="changeTime('yuuki',10,'add')">10分</button>
+          <button class="min-btn" onclick="changeTime('yuuki',15,'add')">15分</button>
+          <button class="min-btn" onclick="changeTime('yuuki',30,'add')">30分</button>
+          <div class="drum-row">
+            <div class="drum-wrap"><div class="drum-label">十の位</div><div class="drum-scroll" id="yuuki-add-tens"></div></div>
+            <div class="drum-sep">:</div>
+            <div class="drum-wrap"><div class="drum-label">一の位</div><div class="drum-scroll" id="yuuki-add-ones"></div></div>
+            <button class="drum-confirm-btn" onclick="confirmDrum('yuuki','add')">＋追加</button>
+          </div>
+        </div>
+        <div class="mins-picker use-picker" id="yuuki-use-picker">
+          <button class="min-btn" onclick="changeTime('yuuki',15,'use')">15分</button>
+          <button class="min-btn" onclick="changeTime('yuuki',30,'use')">30分</button>
+          <button class="min-btn" onclick="changeTime('yuuki',45,'use')">45分</button>
+          <button class="min-btn" onclick="changeTime('yuuki',60,'use')">60分</button>
+          <div class="drum-row">
+            <div class="drum-wrap"><div class="drum-label">十の位</div><div class="drum-scroll" id="yuuki-use-tens"></div></div>
+            <div class="drum-sep">:</div>
+            <div class="drum-wrap"><div class="drum-label">一の位</div><div class="drum-scroll" id="yuuki-use-ones"></div></div>
+            <button class="drum-confirm-btn" onclick="confirmDrum('yuuki','use')">▶使う</button>
+          </div>
         </div>
       </div>
     </div>
@@ -174,105 +219,73 @@
 <div class="toast" id="toast"></div>
 <script>
   const KEY = 'gamebank_v4';
-  function ceilTo5(mins) { return Math.ceil(mins / 5) * 5; }
-  function defaultState() {
-    return { yuwa: 0, yuuki: 0, log: [], lastOpenedDate: todayStr(), activeTab: { yuwa: null, yuuki: null } };
-  }
-  function todayStr() {
-    const d = new Date();
-    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-  }
-  function daysBetween(a, b) {
-    return Math.floor((new Date(b) - new Date(a)) / 86400000);
-  }
-  let state = JSON.parse(localStorage.getItem(KEY) || 'null') || defaultState();
-  if (!state.activeTab) state.activeTab = { yuwa: null, yuuki: null };
-  if (!state.lastOpenedDate) state.lastOpenedDate = todayStr();
-  function initDrum(id, max) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    let html = '';
-    for (let i = 0; i <= max; i++) { html += '<div class="drum-item">' + i + '</div>'; }
-    el.innerHTML = html;
+  function ceilTo5(m) { return Math.ceil(m / 5) * 5; }
+  function defaultState() { return { yuwa:0, yuuki:0, log:[], lastOpenedDate:todayStr(), activeTab:{yuwa:null,yuuki:null} }; }
+  function todayStr() { const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+  function daysBetween(a,b) { return Math.floor((new Date(b)-new Date(a))/86400000); }
+  let state = JSON.parse(localStorage.getItem(KEY)||'null')||defaultState();
+  if(!state.activeTab) state.activeTab={yuwa:null,yuuki:null};
+  if(!state.lastOpenedDate) state.lastOpenedDate=todayStr();
+  function initDrum(id,max) {
+    const el=document.getElementById(id); if(!el) return;
+    let h=''; for(let i=0;i<=max;i++) h+='<div class="drum-item">'+i+'</div>';
+    el.innerHTML=h;
   }
   function getDrumValue(id) {
-    const el = document.getElementById(id);
-    if (!el) return 0;
-    return Math.round(el.scrollTop / 72);
+    const el=document.getElementById(id); if(!el) return 0;
+    const ih=el.querySelector('.drum-item')?el.querySelector('.drum-item').offsetHeight:64;
+    return Math.round(el.scrollTop/ih);
   }
-  function confirmDrum(kid, type) {
-    const tens = getDrumValue(kid + '-' + type + '-tens');
-    const ones = getDrumValue(kid + '-' + type + '-ones');
-    const mins = tens * 10 + ones;
-    if (mins <= 0) { showToast('0より大きい数を選んでください'); return; }
-    changeTime(kid, mins, type);
+  function confirmDrum(kid,type) {
+    const mins=getDrumValue(kid+'-'+type+'-tens')*10+getDrumValue(kid+'-'+type+'-ones');
+    if(mins<=0){showToast('0より大きい数を選んでください');return;}
+    changeTime(kid,mins,type);
   }
-  ['yuwa','yuuki'].forEach(kid => {
-    ['add','use'].forEach(type => {
-      initDrum(kid + '-' + type + '-tens', 9);
-      initDrum(kid + '-' + type + '-ones', 9);
-    });
-  });
+  ['yuwa','yuuki'].forEach(k=>['add','use'].forEach(t=>{initDrum(k+'-'+t+'-tens',9);initDrum(k+'-'+t+'-ones',9);}));
   function applyMissedDays() {
-    const today = todayStr();
-    const days = daysBetween(state.lastOpenedDate, today);
-    if (days <= 0) return;
-    const prevYuwa = state.yuwa, prevYuuki = state.yuuki;
-    for (let i = 0; i < days; i++) {
-      state.yuwa = ceilTo5(state.yuwa * 1.2);
-      state.yuuki = ceilTo5(state.yuuki * 1.5);
-    }
-    const dy = state.yuwa - prevYuwa, dk = state.yuuki - prevYuuki;
-    const ts = nowTs();
-    if (dy > 0) state.log.push({ kid: 'yuwa', label: '🌙 複利×1.2 (' + days + '日分)', delta: dy, ts });
-    if (dk > 0) state.log.push({ kid: 'yuuki', label: '🌙 複利×1.5 (' + days + '日分)', delta: dk, ts });
-    state.lastOpenedDate = today;
-    save();
-    const banner = document.getElementById('bonus-banner');
-    banner.textContent = '🌙 ' + days + '日分の複利ボーナス！ゆうわ +' + dy + '分 ／ ゆうき +' + dk + '分';
-    banner.classList.add('show');
-    setTimeout(() => banner.classList.remove('show'), 5000);
+    const today=todayStr(), days=daysBetween(state.lastOpenedDate,today);
+    if(days<=0) return;
+    const py=state.yuwa, pk=state.yuuki;
+    for(let i=0;i<days;i++){state.yuwa=ceilTo5(state.yuwa*1.2);state.yuuki=ceilTo5(state.yuuki*1.5);}
+    const dy=state.yuwa-py, dk=state.yuuki-pk, ts=nowTs();
+    if(dy>0) state.log.push({kid:'yuwa',label:'🌙 複利×1.2 ('+days+'日分)',delta:dy,ts});
+    if(dk>0) state.log.push({kid:'yuuki',label:'🌙 複利×1.5 ('+days+'日分)',delta:dk,ts});
+    state.lastOpenedDate=today; save();
+    const b=document.getElementById('bonus-banner');
+    b.textContent='🌙 '+days+'日分の複利ボーナス！ゆうわ +'+dy+'分 ／ ゆうき +'+dk+'分';
+    b.classList.add('show'); setTimeout(()=>b.classList.remove('show'),5000);
   }
-  function save() { localStorage.setItem(KEY, JSON.stringify(state)); }
-  function nowTs() {
-    const now = new Date();
-    return (now.getMonth()+1) + '/' + now.getDate() + ' ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
-  }
-  function render() {
-    document.getElementById('yuwa-time').textContent = state.yuwa;
-    document.getElementById('yuuki-time').textContent = state.yuuki;
-    const logEl = document.getElementById('log-list');
-    if (!state.log.length) { logEl.innerHTML = '<div class="empty-log">まだ記録がありません</div>'; return; }
-    logEl.innerHTML = [...state.log].reverse().slice(0, 14).map(l =>
-      '<div class="log-item"><div class="log-dot ' + l.kid + '"></div><div class="log-text">' + (l.kid === 'yuwa' ? 'ゆうわ' : 'ゆうき') + ' ' + l.label + '</div><div class="log-delta ' + (l.delta >= 0 ? 'plus' : 'minus') + '">' + (l.delta >= 0 ? '+' : '') + l.delta + '分</div><div class="log-ts">' + l.ts + '</div></div>'
+  function save(){localStorage.setItem(KEY,JSON.stringify(state));}
+  function nowTs(){const n=new Date();return(n.getMonth()+1)+'/'+n.getDate()+' '+String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');}
+  function render(){
+    document.getElementById('yuwa-time').textContent=state.yuwa;
+    document.getElementById('yuuki-time').textContent=state.yuuki;
+    const el=document.getElementById('log-list');
+    if(!state.log.length){el.innerHTML='<div class="empty-log">まだ記録がありません</div>';return;}
+    el.innerHTML=[...state.log].reverse().slice(0,14).map(l=>
+      '<div class="log-item"><div class="log-dot '+l.kid+'"></div><div class="log-text">'+(l.kid==='yuwa'?'ゆうわ':'ゆうき')+' '+l.label+'</div><div class="log-delta '+(l.delta>=0?'plus':'minus')+'">'+(l.delta>=0?'+':'')+l.delta+'分</div><div class="log-ts">'+l.ts+'</div></div>'
     ).join('');
   }
-  function selectTab(kid, tab) {
-    state.activeTab[kid] = state.activeTab[kid] === tab ? null : tab;
-    ['add','use'].forEach(t => {
-      document.getElementById(kid+'-'+t+'-tab').classList.toggle('active', state.activeTab[kid] === t);
-      document.getElementById(kid+'-'+t+'-picker').classList.toggle('visible', state.activeTab[kid] === t);
+  function selectTab(kid,tab){
+    state.activeTab[kid]=state.activeTab[kid]===tab?null:tab;
+    ['add','use'].forEach(t=>{
+      document.getElementById(kid+'-'+t+'-tab').classList.toggle('active',state.activeTab[kid]===t);
+      document.getElementById(kid+'-'+t+'-picker').classList.toggle('visible',state.activeTab[kid]===t);
     });
   }
-  function changeTime(kid, mins, type) {
-    if (type === 'use') {
-      if (state[kid] < mins) { showToast('時間が足りません！'); return; }
-      state[kid] -= mins;
-      state.log.push({ kid, label: 'ゲーム', delta: -mins, ts: nowTs() });
-      showToast((kid==='yuwa'?'ゆうわ':'ゆうき') + ' −' + mins + '分 🎮');
+  function changeTime(kid,mins,type){
+    if(type==='use'){
+      if(state[kid]<mins){showToast('時間が足りません！');return;}
+      state[kid]-=mins; state.log.push({kid,label:'ゲーム',delta:-mins,ts:nowTs()});
+      showToast((kid==='yuwa'?'ゆうわ':'ゆうき')+' −'+mins+'分 🎮');
     } else {
-      state[kid] += mins;
-      state.log.push({ kid, label: '追加', delta: mins, ts: nowTs() });
-      showToast((kid==='yuwa'?'ゆうわ':'ゆうき') + ' +' + mins + '分 ⭐');
+      state[kid]+=mins; state.log.push({kid,label:'追加',delta:mins,ts:nowTs()});
+      showToast((kid==='yuwa'?'ゆうわ':'ゆうき')+' +'+mins+'分 ⭐');
     }
-    if (state.log.length > 100) state.log.shift();
+    if(state.log.length>100) state.log.shift();
     save(); render();
   }
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg; t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2500);
-  }
+  function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
   applyMissedDays(); render();
 </script>
 </body>
