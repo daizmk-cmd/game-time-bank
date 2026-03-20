@@ -10,9 +10,18 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Nunito', sans-serif; background: #f4f3ff; min-height: 100vh; padding: 20px; }
     #app { max-width: 700px; margin: 0 auto; }
-    .header { text-align: center; padding: 24px 0 26px; }
+    .header { position: relative; text-align: center; padding: 24px 0 26px; }
     .header h1 { font-size: 38px; font-weight: 900; color: #2d2d4e; }
     .header p { font-size: 16px; color: #888; font-weight: 700; margin-top: 6px; }
+    .reload-btn {
+      position: absolute; top: 24px; right: 0;
+      border: none; background: rgba(45,45,78,0.1); border-radius: 50%;
+      width: 48px; height: 48px; font-size: 22px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.3s ease, background 0.2s;
+    }
+    .reload-btn:hover { background: rgba(45,45,78,0.18); }
+    .reload-btn:active { transform: rotate(180deg); }
     .bonus-applied { display: none; background: #f0fdf4; border: 2px solid #86efac; border-radius: 16px; padding: 16px 20px; margin-bottom: 18px; text-align: center; font-size: 18px; font-weight: 800; color: #166534; animation: fadeIn 0.4s ease; }
     .bonus-applied.show { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
@@ -31,14 +40,35 @@
     .use-tab { background: rgba(0,0,0,0.22); color: #fff; }
     .add-tab.active { background: #fff; color: #764ba2; }
     .use-tab.active { background: rgba(0,0,0,0.52); color: #fff; }
-    .mins-picker { display: none; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .mins-picker { display: none; grid-template-columns: repeat(4, 1fr); gap: 8px; }
     .mins-picker.visible { display: grid; }
-    .min-btn { border: none; border-radius: 12px; padding: 16px 0; font-family: 'Nunito', sans-serif; font-size: 20px; font-weight: 900; cursor: pointer; transition: transform 0.1s; }
+    .min-btn { border: none; border-radius: 12px; padding: 0; height: 60px; font-family: 'Nunito', sans-serif; font-size: 19px; font-weight: 900; cursor: pointer; transition: transform 0.1s; width: 100%; }
     .min-btn:active { transform: scale(0.91); }
     .add-picker .min-btn { background: rgba(255,255,255,0.88); color: #444; }
     .use-picker .min-btn { background: rgba(0,0,0,0.32); color: #fff; }
-    .reload-btn { display: block; width: 100%; border: none; border-radius: 14px; padding: 14px 0; font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 900; cursor: pointer; background: rgba(255,255,255,0.85); color: #2d2d4e; margin-bottom: 18px; transition: transform 0.1s; }
-    .reload-btn:active { transform: scale(0.98); }
+    .drum-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; grid-column: 1 / -1; }
+    .drum-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .drum-label { font-size: 12px; font-weight: 800; color: rgba(255,255,255,0.6); }
+    .drum-scroll {
+      width: 100%; height: 72px; overflow-y: scroll; border-radius: 12px;
+      scroll-snap-type: y mandatory; scrollbar-width: none;
+      background: rgba(255,255,255,0.15);
+    }
+    .drum-scroll::-webkit-scrollbar { display: none; }
+    .drum-item {
+      height: 72px; display: flex; align-items: center; justify-content: center;
+      scroll-snap-align: start; font-size: 28px; font-weight: 900; color: #fff;
+      cursor: pointer;
+    }
+    .drum-sep { font-size: 28px; font-weight: 900; color: rgba(255,255,255,0.8); padding-top: 16px; align-self: flex-end; padding-bottom: 16px; }
+    .drum-confirm-btn {
+      border: none; border-radius: 12px; padding: 0 20px; height: 72px;
+      font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 900;
+      cursor: pointer; transition: transform 0.1s; white-space: nowrap; align-self: flex-end;
+    }
+    .drum-confirm-btn:active { transform: scale(0.91); }
+    .add-picker .drum-confirm-btn { background: rgba(255,255,255,0.88); color: #444; }
+    .use-picker .drum-confirm-btn { background: rgba(0,0,0,0.32); color: #fff; }
     .log-section { background: #fff; border-radius: 22px; padding: 20px 22px; box-shadow: 0 2px 14px rgba(0,0,0,0.07); }
     .log-title { font-size: 14px; font-weight: 900; color: #aaa; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; }
     .log-item { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 0.5px solid #f0f0f0; font-size: 16px; }
@@ -52,15 +82,6 @@
     .log-delta.minus { color: #ef4444; }
     .log-ts { font-size: 13px; color: #bbb; font-weight: 700; }
     .empty-log { text-align: center; padding: 16px 0; color: #ccc; font-size: 16px; font-weight: 700; }
-    .custom-row { display: flex; gap: 8px; margin-top: 10px; }
-    .custom-input { flex: 1; border: none; border-radius: 12px; padding: 14px 10px; font-family: 'Nunito', sans-serif; font-size: 20px; font-weight: 900; text-align: center; background: rgba(255,255,255,0.88); color: #444; min-width: 0; }
-    .add-picker .custom-input { background: rgba(255,255,255,0.88); color: #444; }
-    .use-picker .custom-input { background: rgba(0,0,0,0.32); color: #fff; }
-    .use-picker .custom-input::placeholder { color: rgba(255,255,255,0.6); }
-    .custom-btn { border: none; border-radius: 12px; padding: 14px 18px; font-family: 'Nunito', sans-serif; font-size: 20px; font-weight: 900; cursor: pointer; transition: transform 0.1s; white-space: nowrap; }
-    .custom-btn:active { transform: scale(0.91); }
-    .add-picker .custom-btn { background: rgba(255,255,255,0.88); color: #444; }
-    .use-picker .custom-btn { background: rgba(0,0,0,0.32); color: #fff; }
     .toast { position: fixed; top: 22px; left: 50%; transform: translateX(-50%) translateY(-80px); background: #2d2d4e; color: #fff; padding: 14px 30px; border-radius: 999px; font-size: 18px; font-weight: 800; transition: transform 0.3s ease; z-index: 999; white-space: nowrap; pointer-events: none; }
     .toast.show { transform: translateX(-50%) translateY(0); }
   </style>
@@ -70,6 +91,7 @@
   <div class="header">
     <h1>🎮 Game Time Bank</h1>
     <p>ゆうわ ×1.2倍 ／ ゆうき ×1.5倍（毎日自動・5分単位切り上げ）</p>
+    <button class="reload-btn" onclick="location.reload()" title="リロード">🔄</button>
   </div>
   <div class="bonus-applied" id="bonus-banner"></div>
   <div class="kid-card yuwa">
@@ -87,20 +109,24 @@
         <button class="min-btn" onclick="changeTime('yuwa',10,'add')">10分</button>
         <button class="min-btn" onclick="changeTime('yuwa',15,'add')">15分</button>
         <button class="min-btn" onclick="changeTime('yuwa',30,'add')">30分</button>
-      <div class="custom-row">
-        <input class="custom-input" id="yuwa-add-custom" type="number" min="1" max="999" placeholder="分">
-        <button class="custom-btn" onclick="changeCustom('yuwa','add')">＋追加</button>
-      </div>
+        <div class="drum-row">
+          <div class="drum-wrap"><div class="drum-label">十の位</div><div class="drum-scroll" id="yuwa-add-tens"></div></div>
+          <div class="drum-sep">:</div>
+          <div class="drum-wrap"><div class="drum-label">一の位</div><div class="drum-scroll" id="yuwa-add-ones"></div></div>
+          <button class="drum-confirm-btn" onclick="confirmDrum('yuwa','add')">＋追加</button>
+        </div>
       </div>
       <div class="mins-picker use-picker" id="yuwa-use-picker">
         <button class="min-btn" onclick="changeTime('yuwa',15,'use')">15分</button>
         <button class="min-btn" onclick="changeTime('yuwa',30,'use')">30分</button>
         <button class="min-btn" onclick="changeTime('yuwa',45,'use')">45分</button>
         <button class="min-btn" onclick="changeTime('yuwa',60,'use')">60分</button>
-      <div class="custom-row">
-        <input class="custom-input" id="yuwa-use-custom" type="number" min="1" max="999" placeholder="分">
-        <button class="custom-btn" onclick="changeCustom('yuwa','use')">▶使う</button>
-      </div>
+        <div class="drum-row">
+          <div class="drum-wrap"><div class="drum-label">十の位</div><div class="drum-scroll" id="yuwa-use-tens"></div></div>
+          <div class="drum-sep">:</div>
+          <div class="drum-wrap"><div class="drum-label">一の位</div><div class="drum-scroll" id="yuwa-use-ones"></div></div>
+          <button class="drum-confirm-btn" onclick="confirmDrum('yuwa','use')">▶使う</button>
+        </div>
       </div>
     </div>
   </div>
@@ -119,20 +145,27 @@
         <button class="min-btn" onclick="changeTime('yuuki',10,'add')">10分</button>
         <button class="min-btn" onclick="changeTime('yuuki',15,'add')">15分</button>
         <button class="min-btn" onclick="changeTime('yuuki',30,'add')">30分</button>
-      <div class="custom-row">
-        <input class="custom-input" id="yuuki-add-custom" type="number" min="1" max="999" placeholder="分">
-        <button class="custom-btn" onclick="changeCustom('yuuki','add')">＋追加</button>
-      </div>
+        <div class="drum-row">
+          <div class="drum-wrap"><div class="drum-label">十の位</div><div class="drum-scroll" id="yuuki-add-tens"></div></div>
+          <div class="drum-sep">:</div>
+          <div class="drum-wrap"><div class="drum-label">一の位</div><div class="drum-scroll" id="yuuki-add-ones"></div></div>
+          <button class="drum-confirm-btn" onclick="confirmDrum('yuuki','add')">＋追加</button>
+        </div>
       </div>
       <div class="mins-picker use-picker" id="yuuki-use-picker">
         <button class="min-btn" onclick="changeTime('yuuki',15,'use')">15分</button>
         <button class="min-btn" onclick="changeTime('yuuki',30,'use')">30分</button>
         <button class="min-btn" onclick="changeTime('yuuki',45,'use')">45分</button>
         <button class="min-btn" onclick="changeTime('yuuki',60,'use')">60分</button>
+        <div class="drum-row">
+          <div class="drum-wrap"><div class="drum-label">十の位</div><div class="drum-scroll" id="yuuki-use-tens"></div></div>
+          <div class="drum-sep">:</div>
+          <div class="drum-wrap"><div class="drum-label">一の位</div><div class="drum-scroll" id="yuuki-use-ones"></div></div>
+          <button class="drum-confirm-btn" onclick="confirmDrum('yuuki','use')">▶使う</button>
+        </div>
       </div>
     </div>
   </div>
-  <button class="reload-btn" onclick="location.reload()">🔄 リロード</button>
   <div class="log-section">
     <div class="log-title">📋 履歴</div>
     <div id="log-list"><div class="empty-log">まだ記録がありません</div></div>
@@ -155,6 +188,31 @@
   let state = JSON.parse(localStorage.getItem(KEY) || 'null') || defaultState();
   if (!state.activeTab) state.activeTab = { yuwa: null, yuuki: null };
   if (!state.lastOpenedDate) state.lastOpenedDate = todayStr();
+  function initDrum(id, max) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    let html = '';
+    for (let i = 0; i <= max; i++) { html += '<div class="drum-item">' + i + '</div>'; }
+    el.innerHTML = html;
+  }
+  function getDrumValue(id) {
+    const el = document.getElementById(id);
+    if (!el) return 0;
+    return Math.round(el.scrollTop / 72);
+  }
+  function confirmDrum(kid, type) {
+    const tens = getDrumValue(kid + '-' + type + '-tens');
+    const ones = getDrumValue(kid + '-' + type + '-ones');
+    const mins = tens * 10 + ones;
+    if (mins <= 0) { showToast('0より大きい数を選んでください'); return; }
+    changeTime(kid, mins, type);
+  }
+  ['yuwa','yuuki'].forEach(kid => {
+    ['add','use'].forEach(type => {
+      initDrum(kid + '-' + type + '-tens', 9);
+      initDrum(kid + '-' + type + '-ones', 9);
+    });
+  });
   function applyMissedDays() {
     const today = todayStr();
     const days = daysBetween(state.lastOpenedDate, today);
@@ -185,13 +243,9 @@
     document.getElementById('yuuki-time').textContent = state.yuuki;
     const logEl = document.getElementById('log-list');
     if (!state.log.length) { logEl.innerHTML = '<div class="empty-log">まだ記録がありません</div>'; return; }
-    logEl.innerHTML = [...state.log].reverse().slice(0, 14).map(l => `
-      <div class="log-item">
-        <div class="log-dot ${l.kid}"></div>
-        <div class="log-text">${l.kid === 'yuwa' ? 'ゆうわ' : 'ゆうき'} ${l.label}</div>
-        <div class="log-delta ${l.delta >= 0 ? 'plus' : 'minus'}">${l.delta >= 0 ? '+' : ''}${l.delta}分</div>
-        <div class="log-ts">${l.ts}</div>
-      </div>`).join('');
+    logEl.innerHTML = [...state.log].reverse().slice(0, 14).map(l =>
+      '<div class="log-item"><div class="log-dot ' + l.kid + '"></div><div class="log-text">' + (l.kid === 'yuwa' ? 'ゆうわ' : 'ゆうき') + ' ' + l.label + '</div><div class="log-delta ' + (l.delta >= 0 ? 'plus' : 'minus') + '">' + (l.delta >= 0 ? '+' : '') + l.delta + '分</div><div class="log-ts">' + l.ts + '</div></div>'
+    ).join('');
   }
   function selectTab(kid, tab) {
     state.activeTab[kid] = state.activeTab[kid] === tab ? null : tab;
@@ -218,13 +272,6 @@
     const t = document.getElementById('toast');
     t.textContent = msg; t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 2500);
-  }
-  function changeCustom(kid, type) {
-    const inputId = kid + '-' + type + '-custom';
-    const mins = parseInt(document.getElementById(inputId).value);
-    if (!mins || mins <= 0) { showToast('時間を入力してください'); return; }
-    document.getElementById(inputId).value = '';
-    changeTime(kid, mins, type);
   }
   applyMissedDays(); render();
 </script>
