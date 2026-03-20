@@ -37,6 +37,8 @@
     .min-btn:active { transform: scale(0.91); }
     .add-picker .min-btn { background: rgba(255,255,255,0.88); color: #444; }
     .use-picker .min-btn { background: rgba(0,0,0,0.32); color: #fff; }
+    .reload-btn { display: block; width: 100%; border: none; border-radius: 14px; padding: 14px 0; font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 900; cursor: pointer; background: rgba(255,255,255,0.85); color: #2d2d4e; margin-bottom: 18px; transition: transform 0.1s; }
+    .reload-btn:active { transform: scale(0.98); }
     .log-section { background: #fff; border-radius: 22px; padding: 20px 22px; box-shadow: 0 2px 14px rgba(0,0,0,0.07); }
     .log-title { font-size: 14px; font-weight: 900; color: #aaa; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; }
     .log-item { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 0.5px solid #f0f0f0; font-size: 16px; }
@@ -50,6 +52,15 @@
     .log-delta.minus { color: #ef4444; }
     .log-ts { font-size: 13px; color: #bbb; font-weight: 700; }
     .empty-log { text-align: center; padding: 16px 0; color: #ccc; font-size: 16px; font-weight: 700; }
+    .custom-row { display: flex; gap: 8px; margin-top: 10px; }
+    .custom-input { flex: 1; border: none; border-radius: 12px; padding: 14px 10px; font-family: 'Nunito', sans-serif; font-size: 20px; font-weight: 900; text-align: center; background: rgba(255,255,255,0.88); color: #444; min-width: 0; }
+    .add-picker .custom-input { background: rgba(255,255,255,0.88); color: #444; }
+    .use-picker .custom-input { background: rgba(0,0,0,0.32); color: #fff; }
+    .use-picker .custom-input::placeholder { color: rgba(255,255,255,0.6); }
+    .custom-btn { border: none; border-radius: 12px; padding: 14px 18px; font-family: 'Nunito', sans-serif; font-size: 20px; font-weight: 900; cursor: pointer; transition: transform 0.1s; white-space: nowrap; }
+    .custom-btn:active { transform: scale(0.91); }
+    .add-picker .custom-btn { background: rgba(255,255,255,0.88); color: #444; }
+    .use-picker .custom-btn { background: rgba(0,0,0,0.32); color: #fff; }
     .toast { position: fixed; top: 22px; left: 50%; transform: translateX(-50%) translateY(-80px); background: #2d2d4e; color: #fff; padding: 14px 30px; border-radius: 999px; font-size: 18px; font-weight: 800; transition: transform 0.3s ease; z-index: 999; white-space: nowrap; pointer-events: none; }
     .toast.show { transform: translateX(-50%) translateY(0); }
   </style>
@@ -76,12 +87,20 @@
         <button class="min-btn" onclick="changeTime('yuwa',10,'add')">10分</button>
         <button class="min-btn" onclick="changeTime('yuwa',15,'add')">15分</button>
         <button class="min-btn" onclick="changeTime('yuwa',30,'add')">30分</button>
+      <div class="custom-row">
+        <input class="custom-input" id="yuwa-add-custom" type="number" min="1" max="999" placeholder="分">
+        <button class="custom-btn" onclick="changeCustom('yuwa','add')">＋追加</button>
+      </div>
       </div>
       <div class="mins-picker use-picker" id="yuwa-use-picker">
         <button class="min-btn" onclick="changeTime('yuwa',15,'use')">15分</button>
         <button class="min-btn" onclick="changeTime('yuwa',30,'use')">30分</button>
         <button class="min-btn" onclick="changeTime('yuwa',45,'use')">45分</button>
         <button class="min-btn" onclick="changeTime('yuwa',60,'use')">60分</button>
+      <div class="custom-row">
+        <input class="custom-input" id="yuwa-use-custom" type="number" min="1" max="999" placeholder="分">
+        <button class="custom-btn" onclick="changeCustom('yuwa','use')">▶使う</button>
+      </div>
       </div>
     </div>
   </div>
@@ -100,6 +119,10 @@
         <button class="min-btn" onclick="changeTime('yuuki',10,'add')">10分</button>
         <button class="min-btn" onclick="changeTime('yuuki',15,'add')">15分</button>
         <button class="min-btn" onclick="changeTime('yuuki',30,'add')">30分</button>
+      <div class="custom-row">
+        <input class="custom-input" id="yuuki-add-custom" type="number" min="1" max="999" placeholder="分">
+        <button class="custom-btn" onclick="changeCustom('yuuki','add')">＋追加</button>
+      </div>
       </div>
       <div class="mins-picker use-picker" id="yuuki-use-picker">
         <button class="min-btn" onclick="changeTime('yuuki',15,'use')">15分</button>
@@ -109,6 +132,7 @@
       </div>
     </div>
   </div>
+  <button class="reload-btn" onclick="location.reload()">🔄 リロード</button>
   <div class="log-section">
     <div class="log-title">📋 履歴</div>
     <div id="log-list"><div class="empty-log">まだ記録がありません</div></div>
@@ -194,6 +218,13 @@
     const t = document.getElementById('toast');
     t.textContent = msg; t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 2500);
+  }
+  function changeCustom(kid, type) {
+    const inputId = kid + '-' + type + '-custom';
+    const mins = parseInt(document.getElementById(inputId).value);
+    if (!mins || mins <= 0) { showToast('時間を入力してください'); return; }
+    document.getElementById(inputId).value = '';
+    changeTime(kid, mins, type);
   }
   applyMissedDays(); render();
 </script>
