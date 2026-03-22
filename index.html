@@ -10,6 +10,10 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Nunito', sans-serif; background: #f4f3ff; min-height: 100vh; }
     #app { margin: 0 auto; }
+    .sync-status { position: fixed; bottom: 12px; right: 12px; font-size: 11px; font-weight: 800; padding: 5px 10px; border-radius: 999px; z-index: 999; transition: all 0.3s; }
+    .sync-status.ok { background: #dcfce7; color: #166534; }
+    .sync-status.syncing { background: #fef9c3; color: #854d0e; }
+    .sync-status.err { background: #fee2e2; color: #991b1b; }
     .bonus-applied { display: none; background: #f0fdf4; border: 2px solid #86efac; border-radius: 16px; padding: 12px 16px; margin-bottom: 14px; text-align: center; font-weight: 800; color: #166534; animation: fadeIn 0.4s ease; }
     .bonus-applied.show { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
@@ -118,7 +122,7 @@
       .drum-item { height: 56px; font-size: 22px; }
       .drum-sep { font-size: 22px; padding-bottom: 8px; }
       .drum-confirm-btn { height: 56px; padding: 0 12px; font-size: 14px; }
-      .log-section { margin: 8px 14px 20px; border-radius: 16px; padding: 14px 16px; }
+      .log-section { margin: 8px 14px 24px; border-radius: 16px; padding: 14px 16px; }
       .log-title { font-size: 11px; margin-bottom: 8px; }
       .log-item { font-size: 13px; padding: 7px 0; gap: 8px; }
       .log-dot { width: 7px; height: 7px; }
@@ -142,7 +146,7 @@
       <div class="card-bg-icon">⭐</div>
       <div class="kid-name">ゆうわ</div>
       <div class="kid-multiplier">毎晩 ×1.2</div><br>
-      <span class="kid-time" id="yuwa-time">0</span><span class="kid-time-unit">分</span>
+      <span class="kid-time" id="yuwa-time">-</span><span class="kid-time-unit">分</span>
       <div class="action-area">
         <div class="action-tabs">
           <button class="tab-btn add-tab" id="yuwa-add-tab" onclick="selectTab('yuwa','add')">＋ 追加</button>
@@ -178,7 +182,7 @@
       <div class="card-bg-icon">🌟</div>
       <div class="kid-name">ゆうき</div>
       <div class="kid-multiplier">毎晩 ×1.5</div><br>
-      <span class="kid-time" id="yuuki-time">0</span><span class="kid-time-unit">分</span>
+      <span class="kid-time" id="yuuki-time">-</span><span class="kid-time-unit">分</span>
       <div class="action-area">
         <div class="action-tabs">
           <button class="tab-btn add-tab" id="yuuki-add-tab" onclick="selectTab('yuuki','add')">＋ 追加</button>
@@ -213,59 +217,127 @@
   </div>
   <div class="log-section">
     <div class="log-title">📋 履歴</div>
-    <div id="log-list"><div class="empty-log">まだ記録がありません</div></div>
+    <div id="log-list"><div class="empty-log">読み込み中...</div></div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
+<div class="sync-status syncing" id="sync-status">⏳ 接続中...</div>
+
 <script>
-  const KEY = 'gamebank_v4';
-  function ceilTo5(m) { return Math.ceil(m / 5) * 5; }
-  function defaultState() { return { yuwa:0, yuuki:0, log:[], lastOpenedDate:todayStr(), activeTab:{yuwa:null,yuuki:null} }; }
-  function todayStr() { const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
-  function daysBetween(a,b) { return Math.floor((new Date(b)-new Date(a))/86400000); }
-  let state = JSON.parse(localStorage.getItem(KEY)||'null')||defaultState();
-  if(!state.activeTab) state.activeTab={yuwa:null,yuuki:null};
-  if(!state.lastOpenedDate) state.lastOpenedDate=todayStr();
-  function initDrum(id,max) {
-    const el=document.getElementById(id); if(!el) return;
+  const DB = 'https://game-time-bank-default-rtdb.asia-southeast1.firebasedatabase.app';
+  let state = { yuwa:0, yuuki:0, log:[], lastOpenedDate:todayStr(), activeTab:{yuwa:null,yuuki:null} };
+  let loaded = false;
+
+  function ceilTo5(m){ return Math.ceil(m/5)*5; }
+  function todayStr(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+  function daysBetween(a,b){ return Math.floor((new Date(b)-new Date(a))/86400000); }
+  function nowTs(){ const n=new Date(); return (n.getMonth()+1)+'/'+n.getDate()+' '+String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0'); }
+
+  function setSyncStatus(s){
+    const el=document.getElementById('sync-status');
+    el.className='sync-status '+s;
+    el.textContent=s==='ok'?'✅ 同期済み':s==='syncing'?'⏳ 同期中...':'❌ 接続エラー';
+  }
+
+  // Firebase REST API で読み込み
+  async function loadFromDB(){
+    try {
+      const r = await fetch(DB+'/.json');
+      const data = await r.json();
+      if(data){
+        state.yuwa = data.yuwa||0;
+        state.yuuki = data.yuuki||0;
+        state.log = data.log||[];
+        state.lastOpenedDate = data.lastOpenedDate||todayStr();
+        state.activeTab = data.activeTab||{yuwa:null,yuuki:null};
+      }
+      loaded = true;
+      applyMissedDays();
+      render();
+      setSyncStatus('ok');
+    } catch(e){
+      setSyncStatus('err');
+      render();
+    }
+  }
+
+  // Firebase REST API で保存
+  async function saveToDB(){
+    setSyncStatus('syncing');
+    try {
+      await fetch(DB+'/.json', {
+        method: 'PUT',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(state)
+      });
+      setSyncStatus('ok');
+    } catch(e){
+      setSyncStatus('err');
+    }
+  }
+
+  // Firebase Streaming でリアルタイム監視
+  function startStream(){
+    const es = new EventSource(DB+'/.json?accept=text/event-stream');
+    es.addEventListener('put', e => {
+      try {
+        const d = JSON.parse(e.data);
+        if(d.data){
+          const s = d.data;
+          state.yuwa = s.yuwa||0;
+          state.yuuki = s.yuuki||0;
+          state.log = s.log||[];
+          state.lastOpenedDate = s.lastOpenedDate||todayStr();
+          if(loaded) render();
+        }
+      } catch(err){}
+    });
+    es.onerror = () => setSyncStatus('err');
+  }
+
+  function applyMissedDays(){
+    const today=todayStr(), days=daysBetween(state.lastOpenedDate,today);
+    if(days<=0) return;
+    const py=state.yuwa, pk=state.yuuki;
+    for(let i=0;i<days;i++){ state.yuwa=ceilTo5(state.yuwa*1.2); state.yuuki=ceilTo5(state.yuuki*1.5); }
+    const dy=state.yuwa-py, dk=state.yuuki-pk, ts=nowTs();
+    if(dy>0) state.log.push({kid:'yuwa',label:'🌙 複利×1.2 ('+days+'日分)',delta:dy,ts});
+    if(dk>0) state.log.push({kid:'yuuki',label:'🌙 複利×1.5 ('+days+'日分)',delta:dk,ts});
+    if(state.log.length>100) state.log=state.log.slice(-100);
+    state.lastOpenedDate=today;
+    saveToDB();
+    const b=document.getElementById('bonus-banner');
+    b.textContent='🌙 '+days+'日分の複利ボーナス！ゆうわ +'+dy+'分 ／ ゆうき +'+dk+'分';
+    b.classList.add('show'); setTimeout(()=>b.classList.remove('show'),5000);
+  }
+
+  function render(){
+    document.getElementById('yuwa-time').textContent=state.yuwa;
+    document.getElementById('yuuki-time').textContent=state.yuuki;
+    const el=document.getElementById('log-list');
+    if(!state.log||!state.log.length){el.innerHTML='<div class="empty-log">まだ記録がありません</div>';return;}
+    el.innerHTML=[...state.log].reverse().slice(0,14).map(l=>
+      '<div class="log-item"><div class="log-dot '+l.kid+'"></div><div class="log-text">'+(l.kid==='yuwa'?'ゆうわ':'ゆうき')+' '+l.label+'</div><div class="log-delta '+(l.delta>=0?'plus':'minus')+'">'+(l.delta>=0?'+':'')+l.delta+'分</div><div class="log-ts">'+l.ts+'</div></div>'
+    ).join('');
+  }
+
+  function initDrum(id,max){
+    const el=document.getElementById(id); if(!el)return;
     let h=''; for(let i=0;i<=max;i++) h+='<div class="drum-item">'+i+'</div>';
     el.innerHTML=h;
   }
-  function getDrumValue(id) {
-    const el=document.getElementById(id); if(!el) return 0;
+  function getDrumValue(id){
+    const el=document.getElementById(id); if(!el)return 0;
     const ih=el.querySelector('.drum-item')?el.querySelector('.drum-item').offsetHeight:64;
     return Math.round(el.scrollTop/ih);
   }
-  function confirmDrum(kid,type) {
+  function confirmDrum(kid,type){
     const mins=getDrumValue(kid+'-'+type+'-tens')*10+getDrumValue(kid+'-'+type+'-ones');
     if(mins<=0){showToast('0より大きい数を選んでください');return;}
     changeTime(kid,mins,type);
   }
   ['yuwa','yuuki'].forEach(k=>['add','use'].forEach(t=>{initDrum(k+'-'+t+'-tens',9);initDrum(k+'-'+t+'-ones',9);}));
-  function applyMissedDays() {
-    const today=todayStr(), days=daysBetween(state.lastOpenedDate,today);
-    if(days<=0) return;
-    const py=state.yuwa, pk=state.yuuki;
-    for(let i=0;i<days;i++){state.yuwa=ceilTo5(state.yuwa*1.2);state.yuuki=ceilTo5(state.yuuki*1.5);}
-    const dy=state.yuwa-py, dk=state.yuuki-pk, ts=nowTs();
-    if(dy>0) state.log.push({kid:'yuwa',label:'🌙 複利×1.2 ('+days+'日分)',delta:dy,ts});
-    if(dk>0) state.log.push({kid:'yuuki',label:'🌙 複利×1.5 ('+days+'日分)',delta:dk,ts});
-    state.lastOpenedDate=today; save();
-    const b=document.getElementById('bonus-banner');
-    b.textContent='🌙 '+days+'日分の複利ボーナス！ゆうわ +'+dy+'分 ／ ゆうき +'+dk+'分';
-    b.classList.add('show'); setTimeout(()=>b.classList.remove('show'),5000);
-  }
-  function save(){localStorage.setItem(KEY,JSON.stringify(state));}
-  function nowTs(){const n=new Date();return(n.getMonth()+1)+'/'+n.getDate()+' '+String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');}
-  function render(){
-    document.getElementById('yuwa-time').textContent=state.yuwa;
-    document.getElementById('yuuki-time').textContent=state.yuuki;
-    const el=document.getElementById('log-list');
-    if(!state.log.length){el.innerHTML='<div class="empty-log">まだ記録がありません</div>';return;}
-    el.innerHTML=[...state.log].reverse().slice(0,14).map(l=>
-      '<div class="log-item"><div class="log-dot '+l.kid+'"></div><div class="log-text">'+(l.kid==='yuwa'?'ゆうわ':'ゆうき')+' '+l.label+'</div><div class="log-delta '+(l.delta>=0?'plus':'minus')+'">'+(l.delta>=0?'+':'')+l.delta+'分</div><div class="log-ts">'+l.ts+'</div></div>'
-    ).join('');
-  }
+
   function selectTab(kid,tab){
     state.activeTab[kid]=state.activeTab[kid]===tab?null:tab;
     ['add','use'].forEach(t=>{
@@ -273,6 +345,7 @@
       document.getElementById(kid+'-'+t+'-picker').classList.toggle('visible',state.activeTab[kid]===t);
     });
   }
+
   function changeTime(kid,mins,type){
     if(type==='use'){
       if(state[kid]<mins){showToast('時間が足りません！');return;}
@@ -283,10 +356,17 @@
       showToast((kid==='yuwa'?'ゆうわ':'ゆうき')+' +'+mins+'分 ⭐');
     }
     if(state.log.length>100) state.log.shift();
-    save(); render();
+    saveToDB(); render();
   }
-  function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
-  applyMissedDays(); render();
+
+  function showToast(msg){
+    const t=document.getElementById('toast');
+    t.textContent=msg; t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),2500);
+  }
+
+  loadFromDB();
+  startStream();
 </script>
 </body>
 </html>
