@@ -441,13 +441,19 @@
     const today=todayStr(), days=daysBetween(state.lastOpenedDate,today);
     if(days<=0) return;
     const py=state.yuwa, pk=state.yuuki;
+    const pm_yuwa=state.yuwa_money||0, pm_yuuki=state.yuuki_money||0;
     for(let i=0;i<days;i++){
       state.yuwa=ceilTo5(state.yuwa*1.2);
       state.yuuki=ceilTo5(state.yuuki*1.5);
+      if((state.yuwa_money||0)>0) state.yuwa_money=Math.ceil((state.yuwa_money||0)*1.03);
+      if((state.yuuki_money||0)>0) state.yuuki_money=Math.ceil((state.yuuki_money||0)*1.03);
     }
     const dy=state.yuwa-py, dk=state.yuuki-pk, ts=nowTs();
+    const dmy=(state.yuwa_money||0)-pm_yuwa, dmk=(state.yuuki_money||0)-pm_yuuki;
     if(dy>0) state.log.push({kid:'yuwa',label:'🌙 複利×1.2 ('+days+'日分)',delta:dy,ts});
     if(dk>0) state.log.push({kid:'yuuki',label:'🌙 複利×1.5 ('+days+'日分)',delta:dk,ts});
+    if(dmy>0) state.log.push({kid:'yuwa',label:'💰 お小遣い複利+3% ('+days+'日分)',delta:0,ts,type:'money_interest',yen:dmy});
+    if(dmk>0) state.log.push({kid:'yuuki',label:'💰 お小遣い複利+3% ('+days+'日分)',delta:0,ts,type:'money_interest',yen:dmk});
 
     // 複利後に上限チェック→強制変換
     const cy = autoConvertIfOver('yuwa');
@@ -459,6 +465,9 @@
 
     // バナー表示
     let msg = '🌙 '+days+'日分の複利ボーナス！ゆうわ +'+dy+'分 ／ ゆうき +'+dk+'分';
+    if(dmy>0||dmk>0) msg += '　💰 お小遣い：';
+    if(dmy>0) msg += 'ゆうわ +'+dmy+'円';
+    if(dmk>0) msg += ' ゆうき +'+dmk+'円';
     if(cy>0||ck>0) msg += '　💴 上限超過：';
     if(cy>0) msg += 'ゆうわ '+cy+'円';
     if(ck>0) msg += ' ゆうき '+ck+'円';
