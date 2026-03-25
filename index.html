@@ -41,6 +41,20 @@
     .convert-btn:active { transform: scale(0.93); }
     .convert-btn:hover { background: rgba(255,255,255,0.32); }
 
+    /* お小遣い変換ピッカー */
+    .convert-area { margin-top: 10px; }
+    .convert-toggle-btn { border: none; border-radius: 10px; font-family: 'Nunito', sans-serif; font-weight: 900; cursor: pointer; transition: all 0.15s; background: rgba(255,255,255,0.22); color: #fff; white-space: nowrap; width: 100%; }
+    .convert-toggle-btn:hover { background: rgba(255,255,255,0.32); }
+    .convert-toggle-btn.active { background: rgba(255,215,0,0.35); color: #fff; }
+    .convert-picker { display: none; margin-top: 8px; }
+    .convert-picker.visible { display: flex; align-items: flex-end; gap: 8px; }
+    .convert-drum-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .convert-drum-label { font-size: 12px; font-weight: 800; color: rgba(255,255,255,0.6); }
+    .convert-drum-scroll { width: 100%; overflow-y: scroll; border-radius: 12px; scroll-snap-type: y mandatory; scrollbar-width: none; background: rgba(255,255,255,0.15); }
+    .convert-drum-scroll::-webkit-scrollbar { display: none; }
+    .convert-drum-sep { font-weight: 900; color: rgba(255,255,255,0.8); }
+    .convert-confirm-btn { border: none; border-radius: 12px; font-family: 'Nunito', sans-serif; font-weight: 900; cursor: pointer; transition: transform 0.1s; white-space: nowrap; background: rgba(255,215,0,0.5); color: #fff; }
+    .convert-confirm-btn:active { transform: scale(0.91); }
     /* アクションタブ */
     .tab-btn { flex: 1; border: none; border-radius: 14px; font-family: 'Nunito', sans-serif; font-weight: 900; cursor: pointer; transition: all 0.15s; }
     .add-tab { background: rgba(255,255,255,0.22); color: #fff; }
@@ -106,7 +120,11 @@
       .kid-time-unit { font-size: 20px; margin-left: 4px; }
       .kid-money { font-size: 64px; }
       .kid-money-unit { font-size: 20px; margin-left: 4px; }
-      .convert-btn { margin-top: 10px; padding: 9px 16px; font-size: 15px; width: 100%; }
+      .convert-toggle-btn { margin-top: 10px; padding: 9px 16px; font-size: 15px; }
+      .convert-drum-scroll { height: 62px; }
+      .convert-drum-scroll .drum-item { height: 62px; font-size: 25px; }
+      .convert-drum-sep { font-size: 25px; padding-bottom: 10px; }
+      .convert-confirm-btn { height: 62px; padding: 0 14px; font-size: 15px; }
       .action-area { margin-top: 14px; }
       .action-tabs { display: flex; gap: 8px; margin-bottom: 10px; }
       .tab-btn { padding: 12px 0; font-size: 18px; }
@@ -147,7 +165,11 @@
       .kid-time-unit { font-size: 17px; margin-left: 3px; }
       .kid-money { font-size: 50px; }
       .kid-money-unit { font-size: 17px; margin-left: 3px; }
-      .convert-btn { margin-top: 8px; padding: 8px 14px; font-size: 13px; width: 100%; }
+      .convert-toggle-btn { margin-top: 8px; padding: 8px 14px; font-size: 13px; }
+      .convert-drum-scroll { height: 54px; }
+      .convert-drum-scroll .drum-item { height: 54px; font-size: 21px; }
+      .convert-drum-sep { font-size: 21px; padding-bottom: 8px; }
+      .convert-confirm-btn { height: 54px; padding: 0 11px; font-size: 13px; }
       .action-area { margin-top: 12px; }
       .action-tabs { display: flex; gap: 6px; margin-bottom: 8px; }
       .tab-btn { padding: 10px 0; font-size: 15px; }
@@ -194,7 +216,15 @@
           <span class="kid-money" id="yuwa-money">-</span><span class="kid-money-unit">円</span>
         </div>
       </div>
-      <button class="convert-btn" onclick="convertToMoney('yuwa')">💴 時間をお小遣いに変換</button>
+      <div class="convert-area">
+        <button class="convert-toggle-btn" id="yuwa-convert-toggle" onclick="toggleConvert('yuwa')">💴 お小遣いに変換</button>
+        <div class="convert-picker" id="yuwa-convert-picker">
+          <div class="convert-drum-wrap"><div class="convert-drum-label">百・十の位</div><div class="convert-drum-scroll" id="yuwa-conv-tens"></div></div>
+          <div class="convert-drum-sep">:</div>
+          <div class="convert-drum-wrap"><div class="convert-drum-label">一の位</div><div class="convert-drum-scroll" id="yuwa-conv-ones"></div></div>
+          <button class="convert-confirm-btn" onclick="confirmConvert('yuwa')">💴変換</button>
+        </div>
+      </div>
       <div class="action-area">
         <div class="action-tabs">
           <button class="tab-btn add-tab" id="yuwa-add-tab" onclick="selectTab('yuwa','add')">＋ 追加</button>
@@ -243,7 +273,15 @@
           <span class="kid-money" id="yuuki-money">-</span><span class="kid-money-unit">円</span>
         </div>
       </div>
-      <button class="convert-btn" onclick="convertToMoney('yuuki')">💴 時間をお小遣いに変換</button>
+      <div class="convert-area">
+        <button class="convert-toggle-btn" id="yuuki-convert-toggle" onclick="toggleConvert('yuuki')">💴 お小遣いに変換</button>
+        <div class="convert-picker" id="yuuki-convert-picker">
+          <div class="convert-drum-wrap"><div class="convert-drum-label">百・十の位</div><div class="convert-drum-scroll" id="yuuki-conv-tens"></div></div>
+          <div class="convert-drum-sep">:</div>
+          <div class="convert-drum-wrap"><div class="convert-drum-label">一の位</div><div class="convert-drum-scroll" id="yuuki-conv-ones"></div></div>
+          <button class="convert-confirm-btn" onclick="confirmConvert('yuuki')">💴変換</button>
+        </div>
+      </div>
       <div class="action-area">
         <div class="action-tabs">
           <button class="tab-btn add-tab" id="yuuki-add-tab" onclick="selectTab('yuuki','add')">＋ 追加</button>
@@ -352,15 +390,38 @@
     es.onerror = () => setSyncStatus('err');
   }
 
-  // お小遣い手動変換（全時間を変換）
-  function convertToMoney(kid){
-    const mins = state[kid];
-    if(mins <= 0){ showToast('変換できる時間がありません'); return; }
-    state[kid] = 0;
-    state[kid+'_money'] = (state[kid+'_money']||0) + mins;
-    state.log.push({ kid, label:'💴 お小遣い変換', delta: -mins, ts: nowTs(), type:'convert', yen: mins });
-    if(state.log.length > 100) state.log.shift();
+  // 変換ドラムロール
+  function initConvertDrum(id, max){
+    const el=document.getElementById(id); if(!el)return;
+    let h=''; for(let i=0;i<=max;i++) h+='<div class="drum-item">'+i+'</div>';
+    el.innerHTML=h;
+  }
+  function getConvertDrumValue(id){
+    const el=document.getElementById(id); if(!el)return 0;
+    const ih=el.querySelector('.drum-item')?el.querySelector('.drum-item').offsetHeight:62;
+    return Math.round(el.scrollTop/ih);
+  }
+  function toggleConvert(kid){
+    const picker=document.getElementById(kid+'-convert-picker');
+    const btn=document.getElementById(kid+'-convert-toggle');
+    const isVisible=picker.classList.contains('visible');
+    picker.classList.toggle('visible',!isVisible);
+    btn.classList.toggle('active',!isVisible);
+    if(!isVisible){ initConvertDrum(kid+'-conv-tens',99); initConvertDrum(kid+'-conv-ones',9); }
+  }
+  function confirmConvert(kid){
+    const tens=getConvertDrumValue(kid+'-conv-tens');
+    const ones=getConvertDrumValue(kid+'-conv-ones');
+    const mins=tens*10+ones;
+    if(mins<=0){ showToast('0より大きい時間を選んでください'); return; }
+    if(mins>state[kid]){ showToast('時間が足りません！（残り'+state[kid]+'分）'); return; }
+    state[kid]-=mins;
+    state[kid+'_money']=(state[kid+'_money']||0)+mins;
+    state.log.push({kid,label:'💴 お小遣い変換',delta:-mins,ts:nowTs(),type:'convert',yen:mins});
+    if(state.log.length>100) state.log.shift();
     showToast((kid==='yuwa'?'ゆうわ':'ゆうき')+' '+mins+'分 → '+mins+'円 💴');
+    document.getElementById(kid+'-convert-picker').classList.remove('visible');
+    document.getElementById(kid+'-convert-toggle').classList.remove('active');
     saveToDB(); render();
   }
 
