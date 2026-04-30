@@ -17,17 +17,13 @@
     .bonus-applied { display: none; background: #f0fdf4; border: 2px solid #86efac; border-radius: 16px; padding: 12px 16px; margin-bottom: 14px; text-align: center; font-weight: 800; color: #166534; animation: fadeIn 0.4s ease; }
     .bonus-applied.show { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* カード共通 */
     .kid-card { border-radius: 24px; position: relative; overflow: hidden; box-shadow: 0 6px 28px rgba(0,0,0,0.14); }
     .kid-card.yuwa { background: linear-gradient(135deg, #667eea, #764ba2); }
     .kid-card.yuuki { background: linear-gradient(135deg, #f7971e, #fd7c07); }
     .card-bg-icon { position: absolute; right: -10px; top: -10px; opacity: 0.1; pointer-events: none; }
     .kid-name { font-weight: 900; color: rgba(255,255,255,0.9); }
     .kid-multiplier { font-weight: 700; color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.18); display: inline-block; border-radius: 20px; }
-
-    /* 時間＋お小遣い表示エリア */
-    .kid-stats { display: flex; align-items: flex-end; gap: 0; }
+    .kid-stats { display: flex; align-items: flex-end; }
     .stat-block { flex: 1; }
     .stat-label { font-size: 11px; font-weight: 800; color: rgba(255,255,255,0.6); margin-bottom: 2px; }
     .kid-time { font-weight: 900; color: #fff; line-height: 1; letter-spacing: -2px; }
@@ -35,13 +31,6 @@
     .stat-divider { width: 1px; background: rgba(255,255,255,0.25); align-self: stretch; margin: 0 12px; }
     .kid-money { font-weight: 900; color: #fff; line-height: 1; letter-spacing: -2px; }
     .kid-money-unit { font-weight: 700; color: rgba(255,255,255,0.8); }
-
-    /* お小遣い変換ボタン */
-    .convert-btn { border: none; border-radius: 10px; font-family: 'Nunito', sans-serif; font-weight: 900; cursor: pointer; transition: transform 0.1s; background: rgba(255,255,255,0.22); color: #fff; white-space: nowrap; }
-    .convert-btn:active { transform: scale(0.93); }
-    .convert-btn:hover { background: rgba(255,255,255,0.32); }
-
-    /* お小遣い変換ピッカー */
     .convert-area { margin-top: 10px; }
     .convert-toggle-btn { border: none; border-radius: 10px; font-family: 'Nunito', sans-serif; font-weight: 900; cursor: pointer; transition: all 0.15s; background: rgba(255,255,255,0.22); color: #fff; white-space: nowrap; width: 100%; }
     .convert-toggle-btn:hover { background: rgba(255,255,255,0.32); }
@@ -55,7 +44,6 @@
     .convert-drum-sep { font-weight: 900; color: rgba(255,255,255,0.8); }
     .convert-confirm-btn { border: none; border-radius: 12px; font-family: 'Nunito', sans-serif; font-weight: 900; cursor: pointer; transition: transform 0.1s; white-space: nowrap; background: rgba(255,215,0,0.5); color: #fff; }
     .convert-confirm-btn:active { transform: scale(0.91); }
-    /* アクションタブ */
     .tab-btn { flex: 1; border: none; border-radius: 14px; font-family: 'Nunito', sans-serif; font-weight: 900; cursor: pointer; transition: all 0.15s; }
     .add-tab { background: rgba(255,255,255,0.22); color: #fff; }
     .use-tab { background: rgba(0,0,0,0.22); color: #fff; }
@@ -78,8 +66,6 @@
     .drum-confirm-btn:active { transform: scale(0.91); }
     .add-picker .drum-confirm-btn { background: rgba(255,255,255,0.88); color: #444; }
     .use-picker .drum-confirm-btn { background: rgba(0,0,0,0.32); color: #fff; }
-
-    /* ログ */
     .log-section { background: #fff; border-radius: 20px; box-shadow: 0 2px 14px rgba(0,0,0,0.07); }
     .log-title { font-weight: 900; color: #aaa; text-transform: uppercase; letter-spacing: 0.8px; }
     .log-item { display: flex; align-items: center; gap: 8px; border-bottom: 0.5px solid #f0f0f0; }
@@ -97,8 +83,6 @@
     .empty-log { text-align: center; color: #ccc; font-weight: 700; }
     .toast { position: fixed; top: 18px; left: 50%; transform: translateX(-50%) translateY(-80px); background: #2d2d4e; color: #fff; border-radius: 999px; font-weight: 800; transition: transform 0.3s ease; z-index: 999; white-space: nowrap; pointer-events: none; }
     .toast.show { transform: translateX(-50%) translateY(0); }
-
-    /* ===== ECHO SHOW (800px以上) ===== */
     @media (min-width: 800px) {
       body { padding: 20px; }
       #app { max-width: 900px; }
@@ -143,8 +127,6 @@
       .empty-log { font-size: 15px; padding: 14px 0; }
       .toast { font-size: 18px; padding: 14px 28px; }
     }
-
-    /* ===== スマホ (799px以下) ===== */
     @media (max-width: 799px) {
       body { padding: 0; }
       #app { max-width: 100%; padding: 0; }
@@ -199,22 +181,14 @@
   </div>
   <div class="bonus-applied" id="bonus-banner"></div>
   <div class="cards-grid">
-
-    <!-- ゆうわ -->
     <div class="kid-card yuwa">
       <div class="card-bg-icon">⭐</div>
       <div class="kid-name">ゆうわ</div>
       <div class="kid-multiplier">毎晩 ×1.2</div><br>
       <div class="kid-stats">
-        <div class="stat-block">
-          <div class="stat-label">⏱ ゲーム時間</div>
-          <span class="kid-time" id="yuwa-time">-</span><span class="kid-time-unit">分</span>
-        </div>
+        <div class="stat-block"><div class="stat-label">⏱ ゲーム時間</div><span class="kid-time" id="yuwa-time">-</span><span class="kid-time-unit">分</span></div>
         <div class="stat-divider"></div>
-        <div class="stat-block">
-          <div class="stat-label">💴 お小遣い</div>
-          <span class="kid-money" id="yuwa-money">-</span><span class="kid-money-unit">円</span>
-        </div>
+        <div class="stat-block"><div class="stat-label">💴 お小遣い</div><span class="kid-money" id="yuwa-money">-</span><span class="kid-money-unit">円</span></div>
       </div>
       <div class="convert-area">
         <button class="convert-toggle-btn" id="yuwa-convert-toggle" onclick="toggleConvert('yuwa')">💴 お小遣いに変換</button>
@@ -256,22 +230,14 @@
         </div>
       </div>
     </div>
-
-    <!-- ゆうき -->
     <div class="kid-card yuuki">
       <div class="card-bg-icon">🌟</div>
       <div class="kid-name">ゆうき</div>
       <div class="kid-multiplier">毎晩 ×1.5</div><br>
       <div class="kid-stats">
-        <div class="stat-block">
-          <div class="stat-label">⏱ ゲーム時間</div>
-          <span class="kid-time" id="yuuki-time">-</span><span class="kid-time-unit">分</span>
-        </div>
+        <div class="stat-block"><div class="stat-label">⏱ ゲーム時間</div><span class="kid-time" id="yuuki-time">-</span><span class="kid-time-unit">分</span></div>
         <div class="stat-divider"></div>
-        <div class="stat-block">
-          <div class="stat-label">💴 お小遣い</div>
-          <span class="kid-money" id="yuuki-money">-</span><span class="kid-money-unit">円</span>
-        </div>
+        <div class="stat-block"><div class="stat-label">💴 お小遣い</div><span class="kid-money" id="yuuki-money">-</span><span class="kid-money-unit">円</span></div>
       </div>
       <div class="convert-area">
         <button class="convert-toggle-btn" id="yuuki-convert-toggle" onclick="toggleConvert('yuuki')">💴 お小遣いに変換</button>
@@ -313,7 +279,6 @@
         </div>
       </div>
     </div>
-
   </div>
   <div class="log-section">
     <div class="log-title">📋 履歴</div>
@@ -327,14 +292,19 @@
   const DB = 'https://game-time-bank-default-rtdb.asia-southeast1.firebasedatabase.app';
   const MAX_MINS = 560;
   const KEEP_MINS = 60;
+  const LS_KEY = 'gamebank_backup';
 
   let state = { yuwa:0, yuuki:0, yuwa_money:0, yuuki_money:0, log:[], lastOpenedDate:todayStr(), activeTab:{yuwa:null,yuuki:null} };
   let loaded = false;
+  let isSaving = false;
 
   function ceilTo5(m){ return Math.ceil(m/5)*5; }
   function todayStr(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
   function daysBetween(a,b){ return Math.floor((new Date(b)-new Date(a))/86400000); }
   function nowTs(){ const n=new Date(); return (n.getMonth()+1)+'/'+n.getDate()+' '+String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0'); }
+
+  function saveLocal(){ try { localStorage.setItem(LS_KEY, JSON.stringify({...state, _savedAt: Date.now()})); } catch(e){} }
+  function loadLocal(){ try { const d=localStorage.getItem(LS_KEY); return d ? JSON.parse(d) : null; } catch(e){ return null; } }
 
   function setSyncStatus(s){
     const el=document.getElementById('sync-status');
@@ -343,89 +313,73 @@
   }
 
   async function loadFromDB(){
+    const local = loadLocal();
     try {
       const r = await fetch(DB+'/.json');
       const data = await r.json();
       if(data){
-        state.yuwa = data.yuwa||0;
-        state.yuuki = data.yuuki||0;
-        state.yuwa_money = data.yuwa_money||0;
-        state.yuuki_money = data.yuuki_money||0;
-        state.log = data.log||[];
-        state.lastOpenedDate = data.lastOpenedDate||todayStr();
-        state.activeTab = data.activeTab||{yuwa:null,yuuki:null};
+        const fbTime = data._savedAt || 0;
+        const lcTime = local ? (local._savedAt || 0) : 0;
+        const src = lcTime > fbTime ? local : data;
+        state.yuwa = src.yuwa||0;
+        state.yuuki = src.yuuki||0;
+        state.yuwa_money = src.yuwa_money||0;
+        state.yuuki_money = src.yuuki_money||0;
+        state.log = src.log||[];
+        state.lastOpenedDate = src.lastOpenedDate||todayStr();
+        state.activeTab = src.activeTab||{yuwa:null,yuuki:null};
+        if(lcTime > fbTime) await saveToDB();
+      } else if(local) {
+        state = {...state, ...local};
       }
       loaded = true;
       applyMissedDays();
       render();
       setSyncStatus('ok');
-    } catch(e){ setSyncStatus('err'); render(); }
+    } catch(e){
+      if(local){ state = {...state, ...local}; }
+      loaded = true;
+      applyMissedDays();
+      render();
+      setSyncStatus('err');
+    }
   }
 
   async function saveToDB(){
+    isSaving = true;
     setSyncStatus('syncing');
+    const saveData = {...state, _savedAt: Date.now()};
+    saveLocal();
     try {
-      await fetch(DB+'/.json', { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(state) });
+      await fetch(DB+'/.json', { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(saveData) });
       setSyncStatus('ok');
     } catch(e){ setSyncStatus('err'); }
+    finally { isSaving = false; }
   }
 
   function startStream(){
-    const es = new EventSource(DB+'/.json?accept=text/event-stream');
-    es.addEventListener('put', e => {
-      try {
-        const d = JSON.parse(e.data);
-        if(d.data){
-          const s = d.data;
-          state.yuwa = s.yuwa||0;
-          state.yuuki = s.yuuki||0;
-          state.yuwa_money = s.yuwa_money||0;
-          state.yuuki_money = s.yuuki_money||0;
-          state.log = s.log||[];
-          state.lastOpenedDate = s.lastOpenedDate||todayStr();
-          if(loaded) render();
-        }
-      } catch(err){}
-    });
-    es.onerror = () => setSyncStatus('err');
+    try {
+      const es = new EventSource(DB+'/.json?accept=text/event-stream');
+      es.addEventListener('put', e => {
+        if(isSaving) return;
+        try {
+          const d = JSON.parse(e.data);
+          if(d.data && loaded){
+            const s = d.data;
+            state.yuwa = s.yuwa||0;
+            state.yuuki = s.yuuki||0;
+            state.yuwa_money = s.yuwa_money||0;
+            state.yuuki_money = s.yuuki_money||0;
+            state.log = s.log||[];
+            state.lastOpenedDate = s.lastOpenedDate||todayStr();
+            render();
+          }
+        } catch(err){}
+      });
+      es.onerror = () => setSyncStatus('err');
+    } catch(e){}
   }
 
-  // 変換ドラムロール
-  function initConvertDrum(id, max){
-    const el=document.getElementById(id); if(!el)return;
-    let h=''; for(let i=0;i<=max;i++) h+='<div class="drum-item">'+i+'</div>';
-    el.innerHTML=h;
-  }
-  function getConvertDrumValue(id){
-    const el=document.getElementById(id); if(!el)return 0;
-    const ih=el.querySelector('.drum-item')?el.querySelector('.drum-item').offsetHeight:62;
-    return Math.round(el.scrollTop/ih);
-  }
-  function toggleConvert(kid){
-    const picker=document.getElementById(kid+'-convert-picker');
-    const btn=document.getElementById(kid+'-convert-toggle');
-    const isVisible=picker.classList.contains('visible');
-    picker.classList.toggle('visible',!isVisible);
-    btn.classList.toggle('active',!isVisible);
-    if(!isVisible){ initConvertDrum(kid+'-conv-tens',99); initConvertDrum(kid+'-conv-ones',9); }
-  }
-  function confirmConvert(kid){
-    const tens=getConvertDrumValue(kid+'-conv-tens');
-    const ones=getConvertDrumValue(kid+'-conv-ones');
-    const mins=tens*10+ones;
-    if(mins<=0){ showToast('0より大きい時間を選んでください'); return; }
-    if(mins>state[kid]){ showToast('時間が足りません！（残り'+state[kid]+'分）'); return; }
-    state[kid]-=mins;
-    state[kid+'_money']=(state[kid+'_money']||0)+mins;
-    state.log.push({kid,label:'💴 お小遣い変換',delta:-mins,ts:nowTs(),type:'convert',yen:mins});
-    if(state.log.length>100) state.log.shift();
-    showToast((kid==='yuwa'?'ゆうわ':'ゆうき')+' '+mins+'分 → '+mins+'円 💴');
-    document.getElementById(kid+'-convert-picker').classList.remove('visible');
-    document.getElementById(kid+'-convert-toggle').classList.remove('active');
-    saveToDB(); render();
-  }
-
-  // 強制変換（複利後に560分超えたら60分残して変換）
   function autoConvertIfOver(kid){
     if(state[kid] > MAX_MINS){
       const convertMins = state[kid] - KEEP_MINS;
@@ -454,31 +408,19 @@
     if(dk>0) state.log.push({kid:'yuuki',label:'🌙 複利×1.5 ('+days+'日分)',delta:dk,ts});
     if(dmy>0) state.log.push({kid:'yuwa',label:'💰 お小遣い複利+3% ('+days+'日分)',delta:0,ts,type:'money_interest',yen:dmy});
     if(dmk>0) state.log.push({kid:'yuuki',label:'💰 お小遣い複利+3% ('+days+'日分)',delta:0,ts,type:'money_interest',yen:dmk});
-
-    // 複利後に上限チェック→強制変換
-    const cy = autoConvertIfOver('yuwa');
-    const ck = autoConvertIfOver('yuuki');
-
+    const cy=autoConvertIfOver('yuwa'), ck=autoConvertIfOver('yuuki');
     if(state.log.length>100) state.log=state.log.slice(-100);
     state.lastOpenedDate=today;
     saveToDB();
-
-    // バナー表示
-    let msg = '🌙 '+days+'日分の複利ボーナス！ゆうわ +'+dy+'分 ／ ゆうき +'+dk+'分';
-    if(dmy>0||dmk>0) msg += '　💰 お小遣い：';
-    if(dmy>0) msg += 'ゆうわ +'+dmy+'円';
-    if(dmk>0) msg += ' ゆうき +'+dmk+'円';
-    if(cy>0||ck>0) msg += '　💴 上限超過：';
-    if(cy>0) msg += 'ゆうわ '+cy+'円';
-    if(ck>0) msg += ' ゆうき '+ck+'円';
+    let msg='🌙 '+days+'日分の複利ボーナス！ゆうわ +'+dy+'分 ／ ゆうき +'+dk+'分';
+    if(dmy>0||dmk>0) msg+='　💰 お小遣い：';
+    if(dmy>0) msg+='ゆうわ +'+dmy+'円';
+    if(dmk>0) msg+=' ゆうき +'+dmk+'円';
+    if(cy>0||ck>0) msg+='　💴 上限超過：';
+    if(cy>0) msg+='ゆうわ '+cy+'円';
+    if(ck>0) msg+=' ゆうき '+ck+'円';
     const b=document.getElementById('bonus-banner');
-    b.textContent=msg;
-    b.classList.add('show'); setTimeout(()=>b.classList.remove('show'),6000);
-  }
-
-  function saveToDB_debounced(){
-    clearTimeout(saveToDB_debounced._t);
-    saveToDB_debounced._t = setTimeout(saveToDB, 300);
+    b.textContent=msg; b.classList.add('show'); setTimeout(()=>b.classList.remove('show'),6000);
   }
 
   function render(){
@@ -491,9 +433,11 @@
     el.innerHTML=[...state.log].reverse().slice(0,14).map(l=>{
       const name=l.kid==='yuwa'?'ゆうわ':'ゆうき';
       const isConvert=l.type==='convert'||l.type==='auto_convert';
-      const deltaClass=isConvert?'yen':l.delta>=0?'plus':'minus';
-      const deltaText=isConvert?'+'+l.yen+'円':((l.delta>=0?'+':'')+l.delta+'分');
-      return '<div class="log-item"><div class="log-dot '+(isConvert?'money':l.kid)+'"></div><div class="log-text">'+name+' '+l.label+'</div><div class="log-delta '+deltaClass+'">'+deltaText+'</div><div class="log-ts">'+l.ts+'</div></div>';
+      const isInterest=l.type==='money_interest';
+      const dotClass=isConvert||isInterest?'money':l.kid;
+      const deltaClass=isConvert||isInterest?'yen':l.delta>=0?'plus':'minus';
+      const deltaText=isConvert?'+'+l.yen+'円':isInterest?'+'+l.yen+'円':((l.delta>=0?'+':'')+l.delta+'分');
+      return '<div class="log-item"><div class="log-dot '+dotClass+'"></div><div class="log-text">'+name+' '+l.label+'</div><div class="log-delta '+deltaClass+'">'+deltaText+'</div><div class="log-ts">'+l.ts+'</div></div>';
     }).join('');
   }
 
@@ -513,6 +457,40 @@
     changeTime(kid,mins,type);
   }
   ['yuwa','yuuki'].forEach(k=>['add','use'].forEach(t=>{initDrum(k+'-'+t+'-tens',9);initDrum(k+'-'+t+'-ones',9);}));
+
+  function initConvertDrum(id,max){
+    const el=document.getElementById(id); if(!el)return;
+    let h=''; for(let i=0;i<=max;i++) h+='<div class="drum-item">'+i+'</div>';
+    el.innerHTML=h;
+  }
+  function getConvertDrumValue(id){
+    const el=document.getElementById(id); if(!el)return 0;
+    const ih=el.querySelector('.drum-item')?el.querySelector('.drum-item').offsetHeight:62;
+    return Math.round(el.scrollTop/ih);
+  }
+  function toggleConvert(kid){
+    const picker=document.getElementById(kid+'-convert-picker');
+    const btn=document.getElementById(kid+'-convert-toggle');
+    const isVisible=picker.classList.contains('visible');
+    picker.classList.toggle('visible',!isVisible);
+    btn.classList.toggle('active',!isVisible);
+    if(!isVisible){ initConvertDrum(kid+'-conv-tens',99); initConvertDrum(kid+'-conv-ones',9); }
+  }
+  function confirmConvert(kid){
+    const tens=getConvertDrumValue(kid+'-conv-tens');
+    const ones=getConvertDrumValue(kid+'-conv-ones');
+    const mins=tens*10+ones;
+    if(mins<=0){showToast('0より大きい時間を選んでください');return;}
+    if(mins>state[kid]){showToast('時間が足りません！（残り'+state[kid]+'分）');return;}
+    state[kid]-=mins;
+    state[kid+'_money']=(state[kid+'_money']||0)+mins;
+    state.log.push({kid,label:'💴 お小遣い変換',delta:-mins,ts:nowTs(),type:'convert',yen:mins});
+    if(state.log.length>100) state.log.shift();
+    showToast((kid==='yuwa'?'ゆうわ':'ゆうき')+' '+mins+'分 → '+mins+'円 💴');
+    document.getElementById(kid+'-convert-picker').classList.remove('visible');
+    document.getElementById(kid+'-convert-toggle').classList.remove('active');
+    saveToDB(); render();
+  }
 
   function selectTab(kid,tab){
     state.activeTab[kid]=state.activeTab[kid]===tab?null:tab;
