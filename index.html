@@ -17,6 +17,8 @@
     .bonus-applied { display: none; background: #f0fdf4; border: 2px solid #86efac; border-radius: 16px; padding: 12px 16px; margin-bottom: 14px; text-align: center; font-weight: 800; color: #166534; animation: fadeIn 0.4s ease; }
     .bonus-applied.show { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ===== Kid Cards ===== */
     .kid-card { border-radius: 24px; position: relative; overflow: hidden; box-shadow: 0 6px 28px rgba(0,0,0,0.14); }
     .kid-card.yuwa { background: linear-gradient(135deg, #667eea, #764ba2); }
     .kid-card.yuuki { background: linear-gradient(135deg, #f7971e, #fd7c07); }
@@ -31,12 +33,16 @@
     .stat-divider { width: 1px; background: rgba(255,255,255,0.25); align-self: stretch; margin: 0 12px; }
     .kid-money { font-weight: 900; color: #fff; line-height: 1; letter-spacing: -2px; }
     .kid-money-unit { font-weight: 700; color: rgba(255,255,255,0.8); }
+
+    /* ===== Convert Area (yuwa only) ===== */
     .convert-area { margin-top: 10px; }
     .convert-toggle-btn { border: none; border-radius: 10px; font-family: 'Nunito', sans-serif; font-weight: 900; cursor: pointer; transition: all 0.15s; background: rgba(255,255,255,0.22); color: #fff; white-space: nowrap; width: 100%; }
     .convert-toggle-btn:hover { background: rgba(255,255,255,0.32); }
     .convert-toggle-btn.active { background: rgba(255,215,0,0.35); color: #fff; }
     .convert-picker { display: none; margin-top: 8px; }
     .convert-picker.visible { display: flex; align-items: flex-end; gap: 8px; }
+    .convert-picker-inline { display: none; margin-top: 8px; }
+    .convert-picker-inline.visible { display: flex; align-items: flex-end; gap: 8px; }
     .convert-drum-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
     .convert-drum-label { font-size: 12px; font-weight: 800; color: rgba(255,255,255,0.6); }
     .convert-drum-scroll { width: 100%; overflow-y: scroll; border-radius: 12px; scroll-snap-type: y mandatory; scrollbar-width: none; background: rgba(255,255,255,0.15); }
@@ -44,11 +50,16 @@
     .convert-drum-sep { font-weight: 900; color: rgba(255,255,255,0.8); }
     .convert-confirm-btn { border: none; border-radius: 12px; font-family: 'Nunito', sans-serif; font-weight: 900; cursor: pointer; transition: transform 0.1s; white-space: nowrap; background: rgba(255,215,0,0.5); color: #fff; }
     .convert-confirm-btn:active { transform: scale(0.91); }
+
+    /* ===== Tabs ===== */
     .tab-btn { flex: 1; border: none; border-radius: 14px; font-family: 'Nunito', sans-serif; font-weight: 900; cursor: pointer; transition: all 0.15s; }
     .add-tab { background: rgba(255,255,255,0.22); color: #fff; }
     .use-tab { background: rgba(0,0,0,0.22); color: #fff; }
+    .convert-tab { background: rgba(255,215,0,0.22); color: #fff; }
     .add-tab.active { background: #fff; color: #764ba2; }
     .use-tab.active { background: rgba(0,0,0,0.52); color: #fff; }
+    .convert-tab.active { background: rgba(255,215,0,0.55); color: #fff; }
+    .yuuki .add-tab.active { color: #e65100; }
     .mins-picker { display: none; gap: 8px; }
     .mins-picker.visible { display: grid; }
     .min-btn { border: none; border-radius: 12px; font-family: 'Nunito', sans-serif; font-weight: 900; cursor: pointer; transition: transform 0.1s; width: 100%; }
@@ -66,10 +77,42 @@
     .drum-confirm-btn:active { transform: scale(0.91); }
     .add-picker .drum-confirm-btn { background: rgba(255,255,255,0.88); color: #444; }
     .use-picker .drum-confirm-btn { background: rgba(0,0,0,0.32); color: #fff; }
+
+    /* ===== Fixed Deposit (inside yuuki card) ===== */
+    .fixed-inner { margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.2); }
+    .fixed-inner-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .fixed-inner-title { font-weight: 900; color: #fff; flex-shrink: 0; }
+    .fixed-compound-badge { background: rgba(255,255,255,0.25); color: #fff; font-weight: 800; border-radius: 999px; white-space: nowrap; flex-shrink: 0; }
+    .fixed-inner-total { font-weight: 900; color: rgba(255,255,255,0.95); margin-left: auto; white-space: nowrap; }
+    .fixed-lot-list { display: flex; flex-direction: column; }
+    .fixed-lot-card { background: rgba(0,0,0,0.13); border-radius: 14px; overflow: hidden; }
+    .flo-top-row { display: flex; align-items: flex-start; }
+    .flo-left { flex: 1; }
+    .flo-current { font-weight: 900; color: #fff; line-height: 1; letter-spacing: -1.5px; }
+    .flo-unit { font-weight: 700; color: rgba(255,255,255,0.8); margin-left: 3px; }
+    .flo-meta { font-weight: 700; color: rgba(255,255,255,0.6); }
+    .flo-right { text-align: right; flex-shrink: 0; }
+    .flo-lock-label { font-weight: 700; color: rgba(255,255,255,0.6); display: block; }
+    .flo-lock-days { font-weight: 900; color: #FFD54F; display: block; line-height: 1; }
+    .flo-lock-days.mature { color: #81C784; }
+    .flo-progress-track { background: rgba(255,255,255,0.18); border-radius: 999px; overflow: hidden; }
+    .flo-progress-fill { height: 100%; background: linear-gradient(90deg, #FFD54F, #FFA726); border-radius: 999px; transition: width 0.5s ease; }
+    .fixed-lot-card.mature .flo-progress-fill { background: linear-gradient(90deg, #81C784, #43A047); }
+    .fixed-lot-empty { text-align: center; color: rgba(255,255,255,0.45); font-weight: 700; }
+
+    /* Deposit bar */
+    .fixed-deposit-bar { display: flex; align-items: center; border-top: 1px solid rgba(255,255,255,0.15); }
+    .fdb-preset { border: none; border-radius: 10px; background: rgba(255,255,255,0.2); color: #fff; font-family: 'Nunito', sans-serif; font-weight: 900; cursor: pointer; transition: transform 0.1s; white-space: nowrap; flex-shrink: 0; }
+    .fdb-preset:active { transform: scale(0.9); }
+
+    .fdb-main-btn { border: none; border-radius: 10px; background: #fff; color: #e65100; font-family: 'Nunito', sans-serif; font-weight: 900; cursor: pointer; transition: transform 0.1s; white-space: nowrap; flex-shrink: 0; }
+    .fdb-main-btn:active { transform: scale(0.9); }
+
+    /* ===== Log ===== */
     .log-section { background: #fff; border-radius: 20px; box-shadow: 0 2px 14px rgba(0,0,0,0.07); }
     .log-title { font-weight: 900; color: #aaa; text-transform: uppercase; letter-spacing: 0.8px; }
     .log-item { display: flex; align-items: center; gap: 8px; border-bottom: 0.5px solid #f0f0f0; }
-    .log-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .log-item:last-child { border-bottom: none; }
     .log-dot { border-radius: 50%; flex-shrink: 0; }
     .log-dot.yuwa { background: #764ba2; }
     .log-dot.yuuki { background: #fd7c07; }
@@ -85,49 +128,7 @@
     .toast { position: fixed; top: 18px; left: 50%; transform: translateX(-50%) translateY(-80px); background: #2d2d4e; color: #fff; border-radius: 999px; font-weight: 800; transition: transform 0.3s ease; z-index: 999; white-space: nowrap; pointer-events: none; }
     .toast.show { transform: translateX(-50%) translateY(0); }
 
-    /* ===== 定期預金セクション ===== */
-    .fixed-section {
-      background: linear-gradient(135deg, #fff8f0, #fff0e0);
-      border: 2px solid #ffcc80;
-      border-radius: 20px;
-      box-shadow: 0 4px 18px rgba(253,124,7,0.12);
-    }
-    .fixed-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
-    .fixed-title { font-weight: 900; color: #e65100; }
-    .fixed-subtitle { font-weight: 700; color: #bf360c; opacity: 0.7; }
-    .fixed-total-badge { background: linear-gradient(135deg,#f7971e,#fd7c07); color: #fff; font-weight: 900; border-radius: 999px; white-space: nowrap; }
-    .fixed-add-row { display: flex; gap: 8px; flex-wrap: wrap; }
-    .fixed-add-btn { border: none; border-radius: 12px; background: linear-gradient(135deg,#f7971e,#fd7c07); color: #fff; font-family: 'Nunito', sans-serif; font-weight: 900; cursor: pointer; transition: transform 0.1s, box-shadow 0.1s; box-shadow: 0 3px 10px rgba(253,124,7,0.35); }
-    .fixed-add-btn:active { transform: scale(0.91); box-shadow: none; }
-    .fixed-add-btn.drum-toggle { background: rgba(253,124,7,0.15); color: #e65100; box-shadow: none; border: 2px solid rgba(253,124,7,0.4); }
-    .fixed-add-btn.drum-toggle.active { background: rgba(253,124,7,0.25); }
-    .fixed-drum-area { display: none; background: rgba(253,124,7,0.08); border-radius: 14px; }
-    .fixed-drum-area.visible { display: flex; align-items: flex-end; gap: 8px; }
-    .fixed-drum-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-    .fixed-drum-label { font-size: 12px; font-weight: 800; color: #bf360c; }
-    .fixed-drum-scroll { width: 100%; overflow-y: scroll; border-radius: 12px; scroll-snap-type: y mandatory; scrollbar-width: none; background: rgba(253,124,7,0.18); }
-    .fixed-drum-scroll::-webkit-scrollbar { display: none; }
-    .fixed-drum-scroll .drum-item { color: #e65100; }
-    .fixed-drum-sep { font-weight: 900; color: #e65100; }
-    .fixed-confirm-btn { border: none; border-radius: 12px; font-family: 'Nunito', sans-serif; font-weight: 900; cursor: pointer; background: linear-gradient(135deg,#f7971e,#fd7c07); color: #fff; white-space: nowrap; transition: transform 0.1s; }
-    .fixed-confirm-btn:active { transform: scale(0.91); }
-    .fixed-lot-list { display: flex; flex-direction: column; }
-    .fixed-lot { background: #fff; border-radius: 14px; border-left: 4px solid #fd7c07; box-shadow: 0 2px 10px rgba(253,124,7,0.1); }
-    .fixed-lot-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 6px; }
-    .fixed-lot-badge { font-weight: 900; color: #e65100; background: rgba(253,124,7,0.12); border-radius: 999px; }
-    .fixed-lot-current { font-weight: 900; color: #333; line-height: 1; letter-spacing: -1px; }
-    .fixed-lot-current-unit { font-weight: 700; color: #888; }
-    .fixed-lot-meta { font-weight: 700; color: #999; margin-bottom: 8px; }
-    .fixed-lot-progress { height: 10px; background: #ffe0b2; border-radius: 999px; overflow: hidden; }
-    .fixed-lot-fill { height: 100%; background: linear-gradient(90deg, #f7971e, #fd7c07); border-radius: 999px; transition: width 0.4s ease; }
-    .fixed-lot-days { display: flex; justify-content: space-between; font-weight: 800; color: #aaa; }
-    .fixed-lot-days .days-remain { color: #f7971e; }
-    .fixed-lot-mature { background: linear-gradient(135deg,#d4edda,#c3e6cb); border-left-color: #28a745; }
-    .fixed-lot-mature .fixed-lot-badge { color: #155724; background: rgba(40,167,69,0.12); }
-    .fixed-lot-mature .fixed-lot-fill { background: linear-gradient(90deg,#28a745,#20c997); }
-    .fixed-lot-mature .fixed-lot-days .days-remain { color: #28a745; }
-    .fixed-empty { text-align: center; color: #ccc; font-weight: 700; }
-
+    /* ===== Desktop ===== */
     @media (min-width: 800px) {
       body { padding: 20px; }
       #app { max-width: 900px; }
@@ -156,7 +157,7 @@
       .convert-confirm-btn { height: 62px; padding: 0 14px; font-size: 15px; }
       .action-area { margin-top: 14px; }
       .action-tabs { display: flex; gap: 8px; margin-bottom: 10px; }
-      .tab-btn { padding: 12px 0; font-size: 18px; }
+      .tab-btn { padding: 12px 0; font-size: 16px; }
       .mins-picker { grid-template-columns: repeat(4, 1fr); }
       .min-btn { height: 54px; font-size: 17px; }
       .drum-scroll { height: 62px; }
@@ -171,27 +172,26 @@
       .log-ts { font-size: 12px; }
       .empty-log { font-size: 15px; padding: 14px 0; }
       .toast { font-size: 18px; padding: 14px 28px; }
-      /* fixed desktop */
-      .fixed-section { padding: 20px 22px; margin-bottom: 16px; }
-      .fixed-title { font-size: 20px; }
-      .fixed-subtitle { font-size: 13px; margin-bottom: 14px; }
-      .fixed-total-badge { font-size: 14px; padding: 4px 14px; }
-      .fixed-add-row { margin-bottom: 10px; }
-      .fixed-add-btn { font-size: 15px; padding: 11px 20px; }
-      .fixed-drum-area { padding: 14px; margin-top: 4px; }
-      .fixed-drum-scroll { height: 62px; }
-      .fixed-drum-scroll .drum-item { height: 62px; font-size: 25px; }
-      .fixed-drum-sep { font-size: 25px; padding-bottom: 10px; }
-      .fixed-confirm-btn { height: 62px; padding: 0 16px; font-size: 15px; }
-      .fixed-lot-list { gap: 12px; }
-      .fixed-lot { padding: 14px 16px; }
-      .fixed-lot-badge { font-size: 12px; padding: 3px 10px; }
-      .fixed-lot-current { font-size: 42px; }
-      .fixed-lot-current-unit { font-size: 16px; margin-left: 4px; }
-      .fixed-lot-meta { font-size: 13px; margin-top: 2px; }
-      .fixed-lot-days { font-size: 12px; margin-top: 5px; }
-      .fixed-empty { font-size: 15px; padding: 16px 0; }
+      /* Fixed inner - desktop */
+      .fixed-inner { margin-top: 16px; padding-top: 16px; }
+      .fixed-inner-title { font-size: 16px; }
+      .fixed-compound-badge { font-size: 12px; padding: 3px 11px; }
+      .fixed-inner-total { font-size: 15px; }
+      .fixed-lot-list { gap: 10px; margin-bottom: 12px; }
+      .fixed-lot-card { padding: 13px 15px 10px; }
+      .flo-current { font-size: 46px; }
+      .flo-unit { font-size: 18px; }
+      .flo-meta { font-size: 12px; margin-top: 3px; }
+      .flo-lock-label { font-size: 11px; margin-bottom: 2px; }
+      .flo-lock-days { font-size: 18px; }
+      .flo-progress-track { height: 8px; margin-top: 10px; border-radius: 999px; }
+      .fixed-lot-empty { font-size: 14px; padding: 14px 0 10px; }
+      .fixed-deposit-bar { gap: 8px; padding-top: 12px; margin-top: 2px; }
+      .fdb-preset { font-size: 14px; padding: 0 16px; height: 54px; }
+      .fdb-main-btn { font-size: 14px; padding: 0 16px; height: 54px; }
     }
+
+    /* ===== Mobile ===== */
     @media (max-width: 799px) {
       body { padding: 0; }
       #app { max-width: 100%; padding: 0; }
@@ -219,7 +219,7 @@
       .convert-confirm-btn { height: 54px; padding: 0 11px; font-size: 13px; }
       .action-area { margin-top: 12px; }
       .action-tabs { display: flex; gap: 6px; margin-bottom: 8px; }
-      .tab-btn { padding: 10px 0; font-size: 15px; }
+      .tab-btn { padding: 10px 0; font-size: 14px; }
       .mins-picker { grid-template-columns: repeat(4, 1fr); gap: 6px; }
       .min-btn { height: 48px; font-size: 15px; }
       .drum-scroll { height: 54px; }
@@ -234,26 +234,23 @@
       .log-ts { font-size: 11px; }
       .empty-log { font-size: 13px; padding: 12px 0; }
       .toast { font-size: 14px; padding: 10px 22px; }
-      /* fixed mobile */
-      .fixed-section { margin: 0 14px 14px; border-radius: 16px; padding: 14px 16px; }
-      .fixed-title { font-size: 17px; }
-      .fixed-subtitle { font-size: 11px; margin-bottom: 12px; }
-      .fixed-total-badge { font-size: 12px; padding: 3px 10px; }
-      .fixed-add-row { margin-bottom: 8px; }
-      .fixed-add-btn { font-size: 13px; padding: 9px 16px; }
-      .fixed-drum-area { padding: 10px; margin-top: 4px; }
-      .fixed-drum-scroll { height: 54px; }
-      .fixed-drum-scroll .drum-item { height: 54px; font-size: 21px; }
-      .fixed-drum-sep { font-size: 21px; padding-bottom: 8px; }
-      .fixed-confirm-btn { height: 54px; padding: 0 12px; font-size: 13px; }
-      .fixed-lot-list { gap: 10px; }
-      .fixed-lot { padding: 12px 14px; }
-      .fixed-lot-badge { font-size: 11px; padding: 2px 8px; }
-      .fixed-lot-current { font-size: 36px; }
-      .fixed-lot-current-unit { font-size: 14px; margin-left: 3px; }
-      .fixed-lot-meta { font-size: 11px; margin-top: 2px; }
-      .fixed-lot-days { font-size: 11px; margin-top: 4px; }
-      .fixed-empty { font-size: 13px; padding: 12px 0; }
+      /* Fixed inner - mobile */
+      .fixed-inner { margin-top: 14px; padding-top: 14px; }
+      .fixed-inner-title { font-size: 14px; }
+      .fixed-compound-badge { font-size: 10px; padding: 2px 9px; }
+      .fixed-inner-total { font-size: 13px; }
+      .fixed-lot-list { gap: 8px; margin-bottom: 10px; }
+      .fixed-lot-card { padding: 11px 13px 9px; }
+      .flo-current { font-size: 38px; }
+      .flo-unit { font-size: 15px; }
+      .flo-meta { font-size: 11px; margin-top: 2px; }
+      .flo-lock-label { font-size: 10px; margin-bottom: 1px; }
+      .flo-lock-days { font-size: 16px; }
+      .flo-progress-track { height: 7px; margin-top: 8px; border-radius: 999px; }
+      .fixed-lot-empty { font-size: 12px; padding: 12px 0 8px; }
+      .fixed-deposit-bar { gap: 6px; padding-top: 10px; margin-top: 2px; }
+      .fdb-preset { font-size: 13px; padding: 0 12px; height: 46px; }
+      .fdb-main-btn { font-size: 13px; padding: 0 12px; height: 46px; }
     }
   </style>
 </head>
@@ -266,6 +263,8 @@
   </div>
   <div class="bonus-applied" id="bonus-banner"></div>
   <div class="cards-grid">
+
+    <!-- ===== ゆうわカード ===== -->
     <div class="kid-card yuwa">
       <div class="card-bg-icon">⭐</div>
       <div class="kid-name">ゆうわ</div>
@@ -315,6 +314,8 @@
         </div>
       </div>
     </div>
+
+    <!-- ===== ゆうきカード（定期預金込み） ===== -->
     <div class="kid-card yuuki">
       <div class="card-bg-icon">🌟</div>
       <div class="kid-name">ゆうき</div>
@@ -324,19 +325,11 @@
         <div class="stat-divider"></div>
         <div class="stat-block"><div class="stat-label">💴 お小遣い</div><span class="kid-money" id="yuuki-money">-</span><span class="kid-money-unit">円</span></div>
       </div>
-      <div class="convert-area">
-        <button class="convert-toggle-btn" id="yuuki-convert-toggle" onclick="toggleConvert('yuuki')">💴 お小遣いに変換</button>
-        <div class="convert-picker" id="yuuki-convert-picker">
-          <div class="convert-drum-wrap"><div class="convert-drum-label">百・十の位</div><div class="convert-drum-scroll" id="yuuki-conv-tens"></div></div>
-          <div class="convert-drum-sep">:</div>
-          <div class="convert-drum-wrap"><div class="convert-drum-label">一の位</div><div class="convert-drum-scroll" id="yuuki-conv-ones"></div></div>
-          <button class="convert-confirm-btn" onclick="confirmConvert('yuuki')">💴変換</button>
-        </div>
-      </div>
       <div class="action-area">
         <div class="action-tabs">
           <button class="tab-btn add-tab" id="yuuki-add-tab" onclick="selectTab('yuuki','add')">＋ 追加</button>
           <button class="tab-btn use-tab" id="yuuki-use-tab" onclick="selectTab('yuuki','use')">▶ 使う</button>
+          <button class="tab-btn convert-tab" id="yuuki-convert-tab" onclick="selectTab('yuuki','convert')">💴 変換</button>
         </div>
         <div class="mins-picker add-picker" id="yuuki-add-picker">
           <button class="min-btn" onclick="changeTime('yuuki',5,'add')">5分</button>
@@ -362,34 +355,34 @@
             <button class="drum-confirm-btn" onclick="confirmDrum('yuuki','use')">▶使う</button>
           </div>
         </div>
+        <!-- 変換タブパネル（ゆうき専用インライン） -->
+        <div class="convert-picker-inline" id="yuuki-convert-picker">
+          <div class="convert-drum-wrap"><div class="convert-drum-label">百・十の位</div><div class="convert-drum-scroll" id="yuuki-conv-tens"></div></div>
+          <div class="convert-drum-sep">:</div>
+          <div class="convert-drum-wrap"><div class="convert-drum-label">一の位</div><div class="convert-drum-scroll" id="yuuki-conv-ones"></div></div>
+          <button class="convert-confirm-btn" onclick="confirmConvert('yuuki')">💴変換</button>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <!-- ===== ゆうき 定期預金セクション ===== -->
-  <div class="fixed-section" id="fixed-section">
-    <div class="fixed-header-row">
-      <div>
-        <div class="fixed-title">🏦 ゆうき 定期預金</div>
-        <div class="fixed-subtitle">毎日×1.5倍 複利 ／ 7日後に通常預金へ自動移行</div>
+      <!-- 定期預金セクション（カード内） -->
+      <div class="fixed-inner">
+        <div class="fixed-inner-head">
+          <span class="fixed-inner-title">🏦 定期預金</span>
+          <span class="fixed-compound-badge">×1.5倍 複利中</span>
+          <span class="fixed-inner-total" id="fixed-total-disp">計 0分</span>
+        </div>
+        <div class="fixed-lot-list" id="fixed-lot-list">
+          <div class="fixed-lot-empty">まだ定期預金はありません</div>
+        </div>
+        <div class="fixed-deposit-bar">
+          <button class="fdb-preset" onclick="addFixed(30)">30分</button>
+          <button class="fdb-preset" onclick="addFixed(60)">60分</button>
+          <button class="fdb-main-btn" onclick="addFixed(0)" style="display:none"></button>
+        </div>
       </div>
-      <div class="fixed-total-badge" id="fixed-total-badge">0分 預中</div>
     </div>
-    <div class="fixed-add-row" id="fixed-add-row">
-      <button class="fixed-add-btn" onclick="addFixed(30)">＋30分を預ける</button>
-      <button class="fixed-add-btn" onclick="addFixed(60)">＋60分を預ける</button>
-      <button class="fixed-add-btn drum-toggle" id="fixed-drum-toggle" onclick="toggleFixedDrum()">📥 任意の分数</button>
-    </div>
-    <div class="fixed-drum-area" id="fixed-drum-area">
-      <div class="fixed-drum-wrap"><div class="fixed-drum-label">十の位</div><div class="fixed-drum-scroll drum-scroll" id="fixed-drum-tens"></div></div>
-      <div class="fixed-drum-sep">:</div>
-      <div class="fixed-drum-wrap"><div class="fixed-drum-label">一の位</div><div class="fixed-drum-scroll drum-scroll" id="fixed-drum-ones"></div></div>
-      <button class="fixed-confirm-btn" onclick="confirmFixedDrum()">🏦 預ける</button>
-    </div>
-    <div class="fixed-lot-list" id="fixed-lot-list">
-      <div class="fixed-empty">まだ定期預金はありません</div>
-    </div>
-  </div>
+
+  </div><!-- /cards-grid -->
 
   <div class="log-section">
     <div class="log-title">📋 履歴</div>
@@ -454,8 +447,7 @@
       if (data) {
         const fbTime = data._savedAt || 0;
         const lcTime = local ? (local._savedAt || 0) : 0;
-        const src = lcTime > fbTime ? local : data;
-        mergeState(src);
+        mergeState(lcTime > fbTime ? local : data);
         if (lcTime > fbTime) await saveToDB();
       } else if (local) {
         mergeState(local);
@@ -465,7 +457,7 @@
       render();
       setSyncStatus('ok');
     } catch (e) {
-      if (local) { mergeState(local); }
+      if (local) mergeState(local);
       loaded = true;
       applyMissedDays();
       render();
@@ -476,10 +468,9 @@
   async function saveToDB() {
     isSaving = true;
     setSyncStatus('syncing');
-    const saveData = { ...state, _savedAt: Date.now() };
     saveLocal();
     try {
-      await fetch(DB + '/.json', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(saveData) });
+      await fetch(DB + '/.json', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...state, _savedAt: Date.now() }) });
       setSyncStatus('ok');
     } catch (e) { setSyncStatus('err'); }
     finally { isSaving = false; }
@@ -492,17 +483,7 @@
         if (isSaving) return;
         try {
           const d = JSON.parse(e.data);
-          if (d.data && loaded) {
-            const s = d.data;
-            state.yuwa = s.yuwa || 0;
-            state.yuuki = s.yuuki || 0;
-            state.yuwa_money = s.yuwa_money || 0;
-            state.yuuki_money = s.yuuki_money || 0;
-            state.yuuki_fixed = s.yuuki_fixed || [];
-            state.log = s.log || [];
-            state.lastOpenedDate = s.lastOpenedDate || todayStr();
-            render();
-          }
+          if (d.data && loaded) { mergeState(d.data); render(); }
         } catch (err) { }
       });
       es.onerror = () => setSyncStatus('err');
@@ -511,11 +492,11 @@
 
   function autoConvertIfOver(kid) {
     if (state[kid] > MAX_MINS) {
-      const convertMins = state[kid] - KEEP_MINS;
+      const cv = state[kid] - KEEP_MINS;
       state[kid] = KEEP_MINS;
-      state[kid + '_money'] = (state[kid + '_money'] || 0) + convertMins;
-      state.log.push({ kid, label: '🔁 上限超過→お小遣い変換', delta: -convertMins, ts: nowTs(), type: 'auto_convert', yen: convertMins });
-      return convertMins;
+      state[kid + '_money'] = (state[kid + '_money'] || 0) + cv;
+      state.log.push({ kid, label: '🔁 上限超過→お小遣い変換', delta: -cv, ts: nowTs(), type: 'auto_convert', yen: cv });
+      return cv;
     }
     return 0;
   }
@@ -525,9 +506,9 @@
     const days = daysBetween(state.lastOpenedDate, today);
     if (days <= 0) return;
 
-    // 通常預金の複利
+    // 通常複利
     const py = state.yuwa, pk = state.yuuki;
-    const pm_yuwa = state.yuwa_money || 0, pm_yuuki = state.yuuki_money || 0;
+    const pmy = state.yuwa_money || 0, pmk = state.yuuki_money || 0;
     for (let i = 0; i < days; i++) {
       state.yuwa = ceilTo5(state.yuwa * 1.2);
       state.yuuki = ceilTo5(state.yuuki * 1.5);
@@ -535,32 +516,22 @@
       if ((state.yuuki_money || 0) > 0) state.yuuki_money = Math.ceil((state.yuuki_money || 0) * 1.03);
     }
     const dy = state.yuwa - py, dk = state.yuuki - pk, ts = nowTs();
-    const dmy = (state.yuwa_money || 0) - pm_yuwa, dmk = (state.yuuki_money || 0) - pm_yuuki;
+    const dmy = (state.yuwa_money || 0) - pmy, dmk = (state.yuuki_money || 0) - pmk;
     if (dy > 0) state.log.push({ kid: 'yuwa', label: '🌙 複利×1.2 (' + days + '日分)', delta: dy, ts });
     if (dk > 0) state.log.push({ kid: 'yuuki', label: '🌙 複利×1.5 (' + days + '日分)', delta: dk, ts });
     if (dmy > 0) state.log.push({ kid: 'yuwa', label: '💰 お小遣い複利+3% (' + days + '日分)', delta: 0, ts, type: 'money_interest', yen: dmy });
     if (dmk > 0) state.log.push({ kid: 'yuuki', label: '💰 お小遣い複利+3% (' + days + '日分)', delta: 0, ts, type: 'money_interest', yen: dmk });
 
-    // 定期預金の複利 & 満期チェック
+    // 定期預金複利 & 満期チェック
     if (!state.yuuki_fixed) state.yuuki_fixed = [];
     let maturedTotal = 0;
     state.yuuki_fixed = state.yuuki_fixed.filter(lot => {
-      // 経過日数分の複利を適用
-      for (let i = 0; i < days; i++) {
-        lot.currentMins = ceilTo5(lot.currentMins * 1.5);
-      }
+      for (let i = 0; i < days; i++) lot.currentMins = ceilTo5(lot.currentMins * 1.5);
       const elapsed = daysBetween(lot.startDate, today);
       if (elapsed >= FIXED_LOCK_DAYS) {
-        // 満期→通常預金に移行
         state.yuuki += lot.currentMins;
         maturedTotal += lot.currentMins;
-        state.log.push({
-          kid: 'yuuki',
-          label: '🎉 定期満期！通常預金に移行 (スタート' + lot.startMins + '分)',
-          delta: lot.currentMins,
-          ts,
-          type: 'fixed_mature'
-        });
+        state.log.push({ kid: 'yuuki', label: '🎉 定期満期！通常預金に移行 (スタート' + lot.startMins + '分)', delta: lot.currentMins, ts, type: 'fixed_mature' });
         return false;
       }
       return true;
@@ -571,37 +542,12 @@
     state.lastOpenedDate = today;
     saveToDB();
 
-    let msg = '🌙 ' + days + '日分の複利ボーナス！ゆうわ +' + dy + '分 ／ ゆうき +' + dk + '分';
-    if (dmy > 0 || dmk > 0) msg += '　💰 お小遣い：';
-    if (dmy > 0) msg += 'ゆうわ +' + dmy + '円';
-    if (dmk > 0) msg += ' ゆうき +' + dmk + '円';
+    let msg = '🌙 ' + days + '日分の複利！ゆうわ +' + dy + '分 ／ ゆうき +' + dk + '分';
     if (maturedTotal > 0) msg += '　🎉 定期満期 +' + maturedTotal + '分';
-    if (cy > 0 || ck > 0) msg += '　💴 上限超過：';
-    if (cy > 0) msg += 'ゆうわ ' + cy + '円';
-    if (ck > 0) msg += ' ゆうき ' + ck + '円';
+    if (dmy > 0) msg += '　ゆうわ お小遣い +' + dmy + '円';
+    if (dmk > 0) msg += '　ゆうき +' + dmk + '円';
     const b = document.getElementById('bonus-banner');
     b.textContent = msg; b.classList.add('show'); setTimeout(() => b.classList.remove('show'), 6000);
-  }
-
-  function render() {
-    document.getElementById('yuwa-time').textContent = state.yuwa;
-    document.getElementById('yuuki-time').textContent = state.yuuki;
-    document.getElementById('yuwa-money').textContent = state.yuwa_money || 0;
-    document.getElementById('yuuki-money').textContent = state.yuuki_money || 0;
-    renderFixed();
-    const el = document.getElementById('log-list');
-    if (!state.log || !state.log.length) { el.innerHTML = '<div class="empty-log">まだ記録がありません</div>'; return; }
-    el.innerHTML = [...state.log].reverse().slice(0, 14).map(l => {
-      const name = l.kid === 'yuwa' ? 'ゆうわ' : 'ゆうき';
-      const isConvert = l.type === 'convert' || l.type === 'auto_convert';
-      const isInterest = l.type === 'money_interest';
-      const isFixed = l.type === 'fixed_deposit';
-      const isMature = l.type === 'fixed_mature';
-      const dotClass = isConvert || isInterest ? 'money' : (isFixed || isMature) ? 'fixed' : l.kid;
-      const deltaClass = isConvert || isInterest ? 'yen' : (isMature) ? 'plus' : isFixed ? 'minus' : l.delta >= 0 ? 'plus' : 'minus';
-      const deltaText = isConvert ? '+' + l.yen + '円' : isInterest ? '+' + l.yen + '円' : ((l.delta >= 0 ? '+' : '') + l.delta + '分');
-      return '<div class="log-item"><div class="log-dot ' + dotClass + '"></div><div class="log-text">' + name + ' ' + l.label + '</div><div class="log-delta ' + deltaClass + '">' + deltaText + '</div><div class="log-ts">' + l.ts + '</div></div>';
-    }).join('');
   }
 
   // ===== 定期預金レンダリング =====
@@ -609,83 +555,49 @@
     if (!state.yuuki_fixed) state.yuuki_fixed = [];
     const lots = state.yuuki_fixed;
     const today = todayStr();
-    const totalMins = lots.reduce((sum, l) => sum + l.currentMins, 0);
-    document.getElementById('fixed-total-badge').textContent = totalMins + '分 預中';
+    const total = lots.reduce((s, l) => s + l.currentMins, 0);
+    document.getElementById('fixed-total-disp').textContent = '計 ' + total + '分';
 
     const el = document.getElementById('fixed-lot-list');
     if (!lots.length) {
-      el.innerHTML = '<div class="fixed-empty">まだ定期預金はありません</div>';
+      el.innerHTML = '<div class="fixed-lot-empty">まだ定期預金はありません</div>';
       return;
     }
-    el.innerHTML = lots.map((lot, idx) => {
+    el.innerHTML = lots.map(lot => {
       const elapsed = Math.max(0, daysBetween(lot.startDate, today));
       const remain = Math.max(0, FIXED_LOCK_DAYS - elapsed);
-      const pct = Math.min(100, Math.round((elapsed / FIXED_LOCK_DAYS) * 100));
+      const pct = Math.min(100, Math.round(elapsed / FIXED_LOCK_DAYS * 100));
       const isMature = elapsed >= FIXED_LOCK_DAYS;
-      const gain = lot.currentMins - lot.startMins;
-      return `
-        <div class="fixed-lot${isMature ? ' fixed-lot-mature' : ''}">
-          <div class="fixed-lot-top">
-            <span class="fixed-lot-badge">${isMature ? '✅ 満期' : '🔒 ロット' + (idx + 1)}</span>
-            <div style="text-align:right">
-              <span class="fixed-lot-current">${lot.currentMins}</span><span class="fixed-lot-current-unit">分</span>
-            </div>
+      return `<div class="fixed-lot-card${isMature ? ' mature' : ''}">
+        <div class="flo-top-row">
+          <div class="flo-left">
+            <span class="flo-current">${lot.currentMins}</span><span class="flo-unit">分</span>
+            <div class="flo-meta">スタート ${lot.startMins}分　→　${elapsed}日後</div>
           </div>
-          <div class="fixed-lot-meta">スタート ${lot.startMins}分 → 現在 ${lot.currentMins}分（+${gain}分 増えた！）</div>
-          <div class="fixed-lot-progress"><div class="fixed-lot-fill" style="width:${pct}%"></div></div>
-          <div class="fixed-lot-days">
-            <span>📅 ${lot.startDate} 開始</span>
-            <span>${elapsed}日経過 / <span class="days-remain">${isMature ? '満期！' : '残り' + remain + '日'}</span></span>
+          <div class="flo-right">
+            <span class="flo-lock-label">${isMature ? '✅ 満期！' : 'ロック解除まで'}</span>
+            <span class="flo-lock-days${isMature ? ' mature' : ''}">${isMature ? '移行中' : 'あと' + remain + '日'}</span>
           </div>
-        </div>`;
+        </div>
+        <div class="flo-progress-track"><div class="flo-progress-fill" style="width:${pct}%"></div></div>
+      </div>`;
     }).join('');
   }
 
-  // ===== 定期預金追加 =====
+  // ===== 定期追加 =====
   function addFixed(mins) {
     if (!loaded) { showToast('読み込み中...'); return; }
     if (state.yuuki < mins) { showToast('時間が足りません！（残り' + state.yuuki + '分）'); return; }
     state.yuuki -= mins;
     if (!state.yuuki_fixed) state.yuuki_fixed = [];
-    const lot = { id: Date.now(), startMins: mins, currentMins: mins, startDate: todayStr() };
-    state.yuuki_fixed.push(lot);
+    state.yuuki_fixed.push({ id: Date.now(), startMins: mins, currentMins: mins, startDate: todayStr() });
     state.log.push({ kid: 'yuuki', label: '🏦 定期預金 (' + mins + '分)', delta: -mins, ts: nowTs(), type: 'fixed_deposit' });
     if (state.log.length > 100) state.log = state.log.slice(-100);
-    showToast('🏦 ゆうき ' + mins + '分を定期預金に預けました！');
+    showToast('🏦 ゆうき ' + mins + '分を定期預金に！');
     saveToDB(); render();
   }
 
-  let fixedDrumOpen = false;
-  function toggleFixedDrum() {
-    fixedDrumOpen = !fixedDrumOpen;
-    const area = document.getElementById('fixed-drum-area');
-    const btn = document.getElementById('fixed-drum-toggle');
-    area.classList.toggle('visible', fixedDrumOpen);
-    btn.classList.toggle('active', fixedDrumOpen);
-    if (fixedDrumOpen) {
-      initFixedDrum('fixed-drum-tens', 9);
-      initFixedDrum('fixed-drum-ones', 9);
-    }
-  }
-  function initFixedDrum(id, max) {
-    const el = document.getElementById(id); if (!el) return;
-    let h = ''; for (let i = 0; i <= max; i++) h += '<div class="drum-item">' + i + '</div>';
-    el.innerHTML = h;
-  }
-  function getFixedDrumValue(id) {
-    const el = document.getElementById(id); if (!el) return 0;
-    const ih = el.querySelector('.drum-item') ? el.querySelector('.drum-item').offsetHeight : 54;
-    return Math.round(el.scrollTop / ih);
-  }
-  function confirmFixedDrum() {
-    const mins = getFixedDrumValue('fixed-drum-tens') * 10 + getFixedDrumValue('fixed-drum-ones');
-    if (mins <= 0) { showToast('0より大きい数を選んでください'); return; }
-    addFixed(mins);
-    fixedDrumOpen = false;
-    document.getElementById('fixed-drum-area').classList.remove('visible');
-    document.getElementById('fixed-drum-toggle').classList.remove('active');
-  }
-
+  // ===== Drum helpers =====
   function initDrum(id, max) {
     const el = document.getElementById(id); if (!el) return;
     let h = ''; for (let i = 0; i <= max; i++) h += '<div class="drum-item">' + i + '</div>';
@@ -713,7 +625,9 @@
     const ih = el.querySelector('.drum-item') ? el.querySelector('.drum-item').offsetHeight : 62;
     return Math.round(el.scrollTop / ih);
   }
+
   function toggleConvert(kid) {
+    // yuwa only
     const picker = document.getElementById(kid + '-convert-picker');
     const btn = document.getElementById(kid + '-convert-toggle');
     const isVisible = picker.classList.contains('visible');
@@ -721,6 +635,7 @@
     btn.classList.toggle('active', !isVisible);
     if (!isVisible) { initConvertDrum(kid + '-conv-tens', 99); initConvertDrum(kid + '-conv-ones', 9); }
   }
+
   function confirmConvert(kid) {
     const tens = getConvertDrumValue(kid + '-conv-tens');
     const ones = getConvertDrumValue(kid + '-conv-ones');
@@ -732,17 +647,30 @@
     state.log.push({ kid, label: '💴 お小遣い変換', delta: -mins, ts: nowTs(), type: 'convert', yen: mins });
     if (state.log.length > 100) state.log.shift();
     showToast((kid === 'yuwa' ? 'ゆうわ' : 'ゆうき') + ' ' + mins + '分 → ' + mins + '円 💴');
-    document.getElementById(kid + '-convert-picker').classList.remove('visible');
-    document.getElementById(kid + '-convert-toggle').classList.remove('active');
+    if (kid === 'yuwa') {
+      document.getElementById('yuwa-convert-picker').classList.remove('visible');
+      document.getElementById('yuwa-convert-toggle').classList.remove('active');
+    } else {
+      state.activeTab.yuuki = null;
+      document.getElementById('yuuki-convert-tab').classList.remove('active');
+      document.getElementById('yuuki-convert-picker').classList.remove('visible');
+    }
     saveToDB(); render();
   }
 
   function selectTab(kid, tab) {
     state.activeTab[kid] = state.activeTab[kid] === tab ? null : tab;
-    ['add', 'use'].forEach(t => {
-      document.getElementById(kid + '-' + t + '-tab').classList.toggle('active', state.activeTab[kid] === t);
-      document.getElementById(kid + '-' + t + '-picker').classList.toggle('visible', state.activeTab[kid] === t);
+    const tabs = kid === 'yuuki' ? ['add', 'use', 'convert'] : ['add', 'use'];
+    tabs.forEach(t => {
+      const te = document.getElementById(kid + '-' + t + '-tab');
+      const pe = document.getElementById(kid + '-' + t + '-picker');
+      if (te) te.classList.toggle('active', state.activeTab[kid] === t);
+      if (pe) pe.classList.toggle('visible', state.activeTab[kid] === t);
     });
+    if (kid === 'yuuki' && state.activeTab.yuuki === 'convert') {
+      initConvertDrum('yuuki-conv-tens', 99);
+      initConvertDrum('yuuki-conv-ones', 9);
+    }
   }
 
   function changeTime(kid, mins, type) {
@@ -756,6 +684,27 @@
     }
     if (state.log.length > 100) state.log.shift();
     saveToDB(); render();
+  }
+
+  function render() {
+    document.getElementById('yuwa-time').textContent = state.yuwa;
+    document.getElementById('yuuki-time').textContent = state.yuuki;
+    document.getElementById('yuwa-money').textContent = state.yuwa_money || 0;
+    document.getElementById('yuuki-money').textContent = state.yuuki_money || 0;
+    renderFixed();
+    const el = document.getElementById('log-list');
+    if (!state.log || !state.log.length) { el.innerHTML = '<div class="empty-log">まだ記録がありません</div>'; return; }
+    el.innerHTML = [...state.log].reverse().slice(0, 14).map(l => {
+      const name = l.kid === 'yuwa' ? 'ゆうわ' : 'ゆうき';
+      const isConvert = l.type === 'convert' || l.type === 'auto_convert';
+      const isInterest = l.type === 'money_interest';
+      const isFixed = l.type === 'fixed_deposit';
+      const isMature = l.type === 'fixed_mature';
+      const dotClass = isConvert || isInterest ? 'money' : (isFixed || isMature) ? 'fixed' : l.kid;
+      const deltaClass = isConvert || isInterest ? 'yen' : (isMature ? 'plus' : isFixed ? 'minus' : l.delta >= 0 ? 'plus' : 'minus');
+      const deltaText = isConvert ? '+' + l.yen + '円' : isInterest ? '+' + l.yen + '円' : ((l.delta >= 0 ? '+' : '') + l.delta + '分');
+      return '<div class="log-item"><div class="log-dot ' + dotClass + '"></div><div class="log-text">' + name + ' ' + l.label + '</div><div class="log-delta ' + deltaClass + '">' + deltaText + '</div><div class="log-ts">' + l.ts + '</div></div>';
+    }).join('');
   }
 
   function showToast(msg) {
