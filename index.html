@@ -74,6 +74,7 @@
     .log-dot.yuwa { background: #764ba2; }
     .log-dot.yuuki { background: #fd7c07; }
     .log-dot.money { background: #f59e0b; }
+    .log-dot.fixed { background: #ef4444; }
     .log-text { flex: 1; color: #333; font-weight: 700; }
     .log-delta { font-weight: 900; }
     .log-delta.plus { color: #22c55e; }
@@ -83,6 +84,50 @@
     .empty-log { text-align: center; color: #ccc; font-weight: 700; }
     .toast { position: fixed; top: 18px; left: 50%; transform: translateX(-50%) translateY(-80px); background: #2d2d4e; color: #fff; border-radius: 999px; font-weight: 800; transition: transform 0.3s ease; z-index: 999; white-space: nowrap; pointer-events: none; }
     .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* ===== 定期預金セクション ===== */
+    .fixed-section {
+      background: linear-gradient(135deg, #fff8f0, #fff0e0);
+      border: 2px solid #ffcc80;
+      border-radius: 20px;
+      box-shadow: 0 4px 18px rgba(253,124,7,0.12);
+    }
+    .fixed-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+    .fixed-title { font-weight: 900; color: #e65100; }
+    .fixed-subtitle { font-weight: 700; color: #bf360c; opacity: 0.7; }
+    .fixed-total-badge { background: linear-gradient(135deg,#f7971e,#fd7c07); color: #fff; font-weight: 900; border-radius: 999px; white-space: nowrap; }
+    .fixed-add-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .fixed-add-btn { border: none; border-radius: 12px; background: linear-gradient(135deg,#f7971e,#fd7c07); color: #fff; font-family: 'Nunito', sans-serif; font-weight: 900; cursor: pointer; transition: transform 0.1s, box-shadow 0.1s; box-shadow: 0 3px 10px rgba(253,124,7,0.35); }
+    .fixed-add-btn:active { transform: scale(0.91); box-shadow: none; }
+    .fixed-add-btn.drum-toggle { background: rgba(253,124,7,0.15); color: #e65100; box-shadow: none; border: 2px solid rgba(253,124,7,0.4); }
+    .fixed-add-btn.drum-toggle.active { background: rgba(253,124,7,0.25); }
+    .fixed-drum-area { display: none; background: rgba(253,124,7,0.08); border-radius: 14px; }
+    .fixed-drum-area.visible { display: flex; align-items: flex-end; gap: 8px; }
+    .fixed-drum-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .fixed-drum-label { font-size: 12px; font-weight: 800; color: #bf360c; }
+    .fixed-drum-scroll { width: 100%; overflow-y: scroll; border-radius: 12px; scroll-snap-type: y mandatory; scrollbar-width: none; background: rgba(253,124,7,0.18); }
+    .fixed-drum-scroll::-webkit-scrollbar { display: none; }
+    .fixed-drum-scroll .drum-item { color: #e65100; }
+    .fixed-drum-sep { font-weight: 900; color: #e65100; }
+    .fixed-confirm-btn { border: none; border-radius: 12px; font-family: 'Nunito', sans-serif; font-weight: 900; cursor: pointer; background: linear-gradient(135deg,#f7971e,#fd7c07); color: #fff; white-space: nowrap; transition: transform 0.1s; }
+    .fixed-confirm-btn:active { transform: scale(0.91); }
+    .fixed-lot-list { display: flex; flex-direction: column; }
+    .fixed-lot { background: #fff; border-radius: 14px; border-left: 4px solid #fd7c07; box-shadow: 0 2px 10px rgba(253,124,7,0.1); }
+    .fixed-lot-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 6px; }
+    .fixed-lot-badge { font-weight: 900; color: #e65100; background: rgba(253,124,7,0.12); border-radius: 999px; }
+    .fixed-lot-current { font-weight: 900; color: #333; line-height: 1; letter-spacing: -1px; }
+    .fixed-lot-current-unit { font-weight: 700; color: #888; }
+    .fixed-lot-meta { font-weight: 700; color: #999; margin-bottom: 8px; }
+    .fixed-lot-progress { height: 10px; background: #ffe0b2; border-radius: 999px; overflow: hidden; }
+    .fixed-lot-fill { height: 100%; background: linear-gradient(90deg, #f7971e, #fd7c07); border-radius: 999px; transition: width 0.4s ease; }
+    .fixed-lot-days { display: flex; justify-content: space-between; font-weight: 800; color: #aaa; }
+    .fixed-lot-days .days-remain { color: #f7971e; }
+    .fixed-lot-mature { background: linear-gradient(135deg,#d4edda,#c3e6cb); border-left-color: #28a745; }
+    .fixed-lot-mature .fixed-lot-badge { color: #155724; background: rgba(40,167,69,0.12); }
+    .fixed-lot-mature .fixed-lot-fill { background: linear-gradient(90deg,#28a745,#20c997); }
+    .fixed-lot-mature .fixed-lot-days .days-remain { color: #28a745; }
+    .fixed-empty { text-align: center; color: #ccc; font-weight: 700; }
+
     @media (min-width: 800px) {
       body { padding: 20px; }
       #app { max-width: 900px; }
@@ -126,6 +171,26 @@
       .log-ts { font-size: 12px; }
       .empty-log { font-size: 15px; padding: 14px 0; }
       .toast { font-size: 18px; padding: 14px 28px; }
+      /* fixed desktop */
+      .fixed-section { padding: 20px 22px; margin-bottom: 16px; }
+      .fixed-title { font-size: 20px; }
+      .fixed-subtitle { font-size: 13px; margin-bottom: 14px; }
+      .fixed-total-badge { font-size: 14px; padding: 4px 14px; }
+      .fixed-add-row { margin-bottom: 10px; }
+      .fixed-add-btn { font-size: 15px; padding: 11px 20px; }
+      .fixed-drum-area { padding: 14px; margin-top: 4px; }
+      .fixed-drum-scroll { height: 62px; }
+      .fixed-drum-scroll .drum-item { height: 62px; font-size: 25px; }
+      .fixed-drum-sep { font-size: 25px; padding-bottom: 10px; }
+      .fixed-confirm-btn { height: 62px; padding: 0 16px; font-size: 15px; }
+      .fixed-lot-list { gap: 12px; }
+      .fixed-lot { padding: 14px 16px; }
+      .fixed-lot-badge { font-size: 12px; padding: 3px 10px; }
+      .fixed-lot-current { font-size: 42px; }
+      .fixed-lot-current-unit { font-size: 16px; margin-left: 4px; }
+      .fixed-lot-meta { font-size: 13px; margin-top: 2px; }
+      .fixed-lot-days { font-size: 12px; margin-top: 5px; }
+      .fixed-empty { font-size: 15px; padding: 16px 0; }
     }
     @media (max-width: 799px) {
       body { padding: 0; }
@@ -169,6 +234,26 @@
       .log-ts { font-size: 11px; }
       .empty-log { font-size: 13px; padding: 12px 0; }
       .toast { font-size: 14px; padding: 10px 22px; }
+      /* fixed mobile */
+      .fixed-section { margin: 0 14px 14px; border-radius: 16px; padding: 14px 16px; }
+      .fixed-title { font-size: 17px; }
+      .fixed-subtitle { font-size: 11px; margin-bottom: 12px; }
+      .fixed-total-badge { font-size: 12px; padding: 3px 10px; }
+      .fixed-add-row { margin-bottom: 8px; }
+      .fixed-add-btn { font-size: 13px; padding: 9px 16px; }
+      .fixed-drum-area { padding: 10px; margin-top: 4px; }
+      .fixed-drum-scroll { height: 54px; }
+      .fixed-drum-scroll .drum-item { height: 54px; font-size: 21px; }
+      .fixed-drum-sep { font-size: 21px; padding-bottom: 8px; }
+      .fixed-confirm-btn { height: 54px; padding: 0 12px; font-size: 13px; }
+      .fixed-lot-list { gap: 10px; }
+      .fixed-lot { padding: 12px 14px; }
+      .fixed-lot-badge { font-size: 11px; padding: 2px 8px; }
+      .fixed-lot-current { font-size: 36px; }
+      .fixed-lot-current-unit { font-size: 14px; margin-left: 3px; }
+      .fixed-lot-meta { font-size: 11px; margin-top: 2px; }
+      .fixed-lot-days { font-size: 11px; margin-top: 4px; }
+      .fixed-empty { font-size: 13px; padding: 12px 0; }
     }
   </style>
 </head>
@@ -280,6 +365,32 @@
       </div>
     </div>
   </div>
+
+  <!-- ===== ゆうき 定期預金セクション ===== -->
+  <div class="fixed-section" id="fixed-section">
+    <div class="fixed-header-row">
+      <div>
+        <div class="fixed-title">🏦 ゆうき 定期預金</div>
+        <div class="fixed-subtitle">毎日×1.5倍 複利 ／ 7日後に通常預金へ自動移行</div>
+      </div>
+      <div class="fixed-total-badge" id="fixed-total-badge">0分 預中</div>
+    </div>
+    <div class="fixed-add-row" id="fixed-add-row">
+      <button class="fixed-add-btn" onclick="addFixed(30)">＋30分を預ける</button>
+      <button class="fixed-add-btn" onclick="addFixed(60)">＋60分を預ける</button>
+      <button class="fixed-add-btn drum-toggle" id="fixed-drum-toggle" onclick="toggleFixedDrum()">📥 任意の分数</button>
+    </div>
+    <div class="fixed-drum-area" id="fixed-drum-area">
+      <div class="fixed-drum-wrap"><div class="fixed-drum-label">十の位</div><div class="fixed-drum-scroll drum-scroll" id="fixed-drum-tens"></div></div>
+      <div class="fixed-drum-sep">:</div>
+      <div class="fixed-drum-wrap"><div class="fixed-drum-label">一の位</div><div class="fixed-drum-scroll drum-scroll" id="fixed-drum-ones"></div></div>
+      <button class="fixed-confirm-btn" onclick="confirmFixedDrum()">🏦 預ける</button>
+    </div>
+    <div class="fixed-lot-list" id="fixed-lot-list">
+      <div class="fixed-empty">まだ定期預金はありません</div>
+    </div>
+  </div>
+
   <div class="log-section">
     <div class="log-title">📋 履歴</div>
     <div id="log-list"><div class="empty-log">読み込み中...</div></div>
@@ -292,52 +403,69 @@
   const DB = 'https://game-time-bank-default-rtdb.asia-southeast1.firebasedatabase.app';
   const MAX_MINS = 560;
   const KEEP_MINS = 60;
+  const FIXED_LOCK_DAYS = 7;
   const LS_KEY = 'gamebank_backup';
 
-  let state = { yuwa:0, yuuki:0, yuwa_money:0, yuuki_money:0, log:[], lastOpenedDate:todayStr(), activeTab:{yuwa:null,yuuki:null} };
+  let state = {
+    yuwa: 0, yuuki: 0, yuwa_money: 0, yuuki_money: 0,
+    yuuki_fixed: [],
+    log: [], lastOpenedDate: todayStr(),
+    activeTab: { yuwa: null, yuuki: null }
+  };
   let loaded = false;
   let isSaving = false;
 
-  function ceilTo5(m){ return Math.ceil(m/5)*5; }
-  function todayStr(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
-  function daysBetween(a,b){ return Math.floor((new Date(b)-new Date(a))/86400000); }
-  function nowTs(){ const n=new Date(); return (n.getMonth()+1)+'/'+n.getDate()+' '+String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0'); }
-
-  function saveLocal(){ try { localStorage.setItem(LS_KEY, JSON.stringify({...state, _savedAt: Date.now()})); } catch(e){} }
-  function loadLocal(){ try { const d=localStorage.getItem(LS_KEY); return d ? JSON.parse(d) : null; } catch(e){ return null; } }
-
-  function setSyncStatus(s){
-    const el=document.getElementById('sync-status');
-    el.className='sync-status '+s;
-    el.textContent=s==='ok'?'✅ 同期済み':s==='syncing'?'⏳ 同期中...':'❌ 接続エラー';
+  function ceilTo5(m) { return Math.ceil(m / 5) * 5; }
+  function todayStr() {
+    const d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+  function daysBetween(a, b) { return Math.floor((new Date(b) - new Date(a)) / 86400000); }
+  function nowTs() {
+    const n = new Date();
+    return (n.getMonth() + 1) + '/' + n.getDate() + ' ' + String(n.getHours()).padStart(2, '0') + ':' + String(n.getMinutes()).padStart(2, '0');
   }
 
-  async function loadFromDB(){
+  function saveLocal() { try { localStorage.setItem(LS_KEY, JSON.stringify({ ...state, _savedAt: Date.now() })); } catch (e) { } }
+  function loadLocal() { try { const d = localStorage.getItem(LS_KEY); return d ? JSON.parse(d) : null; } catch (e) { return null; } }
+
+  function setSyncStatus(s) {
+    const el = document.getElementById('sync-status');
+    el.className = 'sync-status ' + s;
+    el.textContent = s === 'ok' ? '✅ 同期済み' : s === 'syncing' ? '⏳ 同期中...' : '❌ 接続エラー';
+  }
+
+  function mergeState(src) {
+    state.yuwa = src.yuwa || 0;
+    state.yuuki = src.yuuki || 0;
+    state.yuwa_money = src.yuwa_money || 0;
+    state.yuuki_money = src.yuuki_money || 0;
+    state.yuuki_fixed = src.yuuki_fixed || [];
+    state.log = src.log || [];
+    state.lastOpenedDate = src.lastOpenedDate || todayStr();
+    state.activeTab = src.activeTab || { yuwa: null, yuuki: null };
+  }
+
+  async function loadFromDB() {
     const local = loadLocal();
     try {
-      const r = await fetch(DB+'/.json');
+      const r = await fetch(DB + '/.json');
       const data = await r.json();
-      if(data){
+      if (data) {
         const fbTime = data._savedAt || 0;
         const lcTime = local ? (local._savedAt || 0) : 0;
         const src = lcTime > fbTime ? local : data;
-        state.yuwa = src.yuwa||0;
-        state.yuuki = src.yuuki||0;
-        state.yuwa_money = src.yuwa_money||0;
-        state.yuuki_money = src.yuuki_money||0;
-        state.log = src.log||[];
-        state.lastOpenedDate = src.lastOpenedDate||todayStr();
-        state.activeTab = src.activeTab||{yuwa:null,yuuki:null};
-        if(lcTime > fbTime) await saveToDB();
-      } else if(local) {
-        state = {...state, ...local};
+        mergeState(src);
+        if (lcTime > fbTime) await saveToDB();
+      } else if (local) {
+        mergeState(local);
       }
       loaded = true;
       applyMissedDays();
       render();
       setSyncStatus('ok');
-    } catch(e){
-      if(local){ state = {...state, ...local}; }
+    } catch (e) {
+      if (local) { mergeState(local); }
       loaded = true;
       applyMissedDays();
       render();
@@ -345,178 +473,295 @@
     }
   }
 
-  async function saveToDB(){
+  async function saveToDB() {
     isSaving = true;
     setSyncStatus('syncing');
-    const saveData = {...state, _savedAt: Date.now()};
+    const saveData = { ...state, _savedAt: Date.now() };
     saveLocal();
     try {
-      await fetch(DB+'/.json', { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(saveData) });
+      await fetch(DB + '/.json', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(saveData) });
       setSyncStatus('ok');
-    } catch(e){ setSyncStatus('err'); }
+    } catch (e) { setSyncStatus('err'); }
     finally { isSaving = false; }
   }
 
-  function startStream(){
+  function startStream() {
     try {
-      const es = new EventSource(DB+'/.json?accept=text/event-stream');
+      const es = new EventSource(DB + '/.json?accept=text/event-stream');
       es.addEventListener('put', e => {
-        if(isSaving) return;
+        if (isSaving) return;
         try {
           const d = JSON.parse(e.data);
-          if(d.data && loaded){
+          if (d.data && loaded) {
             const s = d.data;
-            state.yuwa = s.yuwa||0;
-            state.yuuki = s.yuuki||0;
-            state.yuwa_money = s.yuwa_money||0;
-            state.yuuki_money = s.yuuki_money||0;
-            state.log = s.log||[];
-            state.lastOpenedDate = s.lastOpenedDate||todayStr();
+            state.yuwa = s.yuwa || 0;
+            state.yuuki = s.yuuki || 0;
+            state.yuwa_money = s.yuwa_money || 0;
+            state.yuuki_money = s.yuuki_money || 0;
+            state.yuuki_fixed = s.yuuki_fixed || [];
+            state.log = s.log || [];
+            state.lastOpenedDate = s.lastOpenedDate || todayStr();
             render();
           }
-        } catch(err){}
+        } catch (err) { }
       });
       es.onerror = () => setSyncStatus('err');
-    } catch(e){}
+    } catch (e) { }
   }
 
-  function autoConvertIfOver(kid){
-    if(state[kid] > MAX_MINS){
+  function autoConvertIfOver(kid) {
+    if (state[kid] > MAX_MINS) {
       const convertMins = state[kid] - KEEP_MINS;
       state[kid] = KEEP_MINS;
-      state[kid+'_money'] = (state[kid+'_money']||0) + convertMins;
-      state.log.push({ kid, label:'🔁 上限超過→お小遣い変換', delta:-convertMins, ts:nowTs(), type:'auto_convert', yen:convertMins });
+      state[kid + '_money'] = (state[kid + '_money'] || 0) + convertMins;
+      state.log.push({ kid, label: '🔁 上限超過→お小遣い変換', delta: -convertMins, ts: nowTs(), type: 'auto_convert', yen: convertMins });
       return convertMins;
     }
     return 0;
   }
 
-  function applyMissedDays(){
-    const today=todayStr(), days=daysBetween(state.lastOpenedDate,today);
-    if(days<=0) return;
-    const py=state.yuwa, pk=state.yuuki;
-    const pm_yuwa=state.yuwa_money||0, pm_yuuki=state.yuuki_money||0;
-    for(let i=0;i<days;i++){
-      state.yuwa=ceilTo5(state.yuwa*1.2);
-      state.yuuki=ceilTo5(state.yuuki*1.5);
-      if((state.yuwa_money||0)>0) state.yuwa_money=Math.ceil((state.yuwa_money||0)*1.03);
-      if((state.yuuki_money||0)>0) state.yuuki_money=Math.ceil((state.yuuki_money||0)*1.03);
+  function applyMissedDays() {
+    const today = todayStr();
+    const days = daysBetween(state.lastOpenedDate, today);
+    if (days <= 0) return;
+
+    // 通常預金の複利
+    const py = state.yuwa, pk = state.yuuki;
+    const pm_yuwa = state.yuwa_money || 0, pm_yuuki = state.yuuki_money || 0;
+    for (let i = 0; i < days; i++) {
+      state.yuwa = ceilTo5(state.yuwa * 1.2);
+      state.yuuki = ceilTo5(state.yuuki * 1.5);
+      if ((state.yuwa_money || 0) > 0) state.yuwa_money = Math.ceil((state.yuwa_money || 0) * 1.03);
+      if ((state.yuuki_money || 0) > 0) state.yuuki_money = Math.ceil((state.yuuki_money || 0) * 1.03);
     }
-    const dy=state.yuwa-py, dk=state.yuuki-pk, ts=nowTs();
-    const dmy=(state.yuwa_money||0)-pm_yuwa, dmk=(state.yuuki_money||0)-pm_yuuki;
-    if(dy>0) state.log.push({kid:'yuwa',label:'🌙 複利×1.2 ('+days+'日分)',delta:dy,ts});
-    if(dk>0) state.log.push({kid:'yuuki',label:'🌙 複利×1.5 ('+days+'日分)',delta:dk,ts});
-    if(dmy>0) state.log.push({kid:'yuwa',label:'💰 お小遣い複利+3% ('+days+'日分)',delta:0,ts,type:'money_interest',yen:dmy});
-    if(dmk>0) state.log.push({kid:'yuuki',label:'💰 お小遣い複利+3% ('+days+'日分)',delta:0,ts,type:'money_interest',yen:dmk});
-    const cy=autoConvertIfOver('yuwa'), ck=autoConvertIfOver('yuuki');
-    if(state.log.length>100) state.log=state.log.slice(-100);
-    state.lastOpenedDate=today;
+    const dy = state.yuwa - py, dk = state.yuuki - pk, ts = nowTs();
+    const dmy = (state.yuwa_money || 0) - pm_yuwa, dmk = (state.yuuki_money || 0) - pm_yuuki;
+    if (dy > 0) state.log.push({ kid: 'yuwa', label: '🌙 複利×1.2 (' + days + '日分)', delta: dy, ts });
+    if (dk > 0) state.log.push({ kid: 'yuuki', label: '🌙 複利×1.5 (' + days + '日分)', delta: dk, ts });
+    if (dmy > 0) state.log.push({ kid: 'yuwa', label: '💰 お小遣い複利+3% (' + days + '日分)', delta: 0, ts, type: 'money_interest', yen: dmy });
+    if (dmk > 0) state.log.push({ kid: 'yuuki', label: '💰 お小遣い複利+3% (' + days + '日分)', delta: 0, ts, type: 'money_interest', yen: dmk });
+
+    // 定期預金の複利 & 満期チェック
+    if (!state.yuuki_fixed) state.yuuki_fixed = [];
+    let maturedTotal = 0;
+    state.yuuki_fixed = state.yuuki_fixed.filter(lot => {
+      // 経過日数分の複利を適用
+      for (let i = 0; i < days; i++) {
+        lot.currentMins = ceilTo5(lot.currentMins * 1.5);
+      }
+      const elapsed = daysBetween(lot.startDate, today);
+      if (elapsed >= FIXED_LOCK_DAYS) {
+        // 満期→通常預金に移行
+        state.yuuki += lot.currentMins;
+        maturedTotal += lot.currentMins;
+        state.log.push({
+          kid: 'yuuki',
+          label: '🎉 定期満期！通常預金に移行 (スタート' + lot.startMins + '分)',
+          delta: lot.currentMins,
+          ts,
+          type: 'fixed_mature'
+        });
+        return false;
+      }
+      return true;
+    });
+
+    const cy = autoConvertIfOver('yuwa'), ck = autoConvertIfOver('yuuki');
+    if (state.log.length > 100) state.log = state.log.slice(-100);
+    state.lastOpenedDate = today;
     saveToDB();
-    let msg='🌙 '+days+'日分の複利ボーナス！ゆうわ +'+dy+'分 ／ ゆうき +'+dk+'分';
-    if(dmy>0||dmk>0) msg+='　💰 お小遣い：';
-    if(dmy>0) msg+='ゆうわ +'+dmy+'円';
-    if(dmk>0) msg+=' ゆうき +'+dmk+'円';
-    if(cy>0||ck>0) msg+='　💴 上限超過：';
-    if(cy>0) msg+='ゆうわ '+cy+'円';
-    if(ck>0) msg+=' ゆうき '+ck+'円';
-    const b=document.getElementById('bonus-banner');
-    b.textContent=msg; b.classList.add('show'); setTimeout(()=>b.classList.remove('show'),6000);
+
+    let msg = '🌙 ' + days + '日分の複利ボーナス！ゆうわ +' + dy + '分 ／ ゆうき +' + dk + '分';
+    if (dmy > 0 || dmk > 0) msg += '　💰 お小遣い：';
+    if (dmy > 0) msg += 'ゆうわ +' + dmy + '円';
+    if (dmk > 0) msg += ' ゆうき +' + dmk + '円';
+    if (maturedTotal > 0) msg += '　🎉 定期満期 +' + maturedTotal + '分';
+    if (cy > 0 || ck > 0) msg += '　💴 上限超過：';
+    if (cy > 0) msg += 'ゆうわ ' + cy + '円';
+    if (ck > 0) msg += ' ゆうき ' + ck + '円';
+    const b = document.getElementById('bonus-banner');
+    b.textContent = msg; b.classList.add('show'); setTimeout(() => b.classList.remove('show'), 6000);
   }
 
-  function render(){
-    document.getElementById('yuwa-time').textContent=state.yuwa;
-    document.getElementById('yuuki-time').textContent=state.yuuki;
-    document.getElementById('yuwa-money').textContent=state.yuwa_money||0;
-    document.getElementById('yuuki-money').textContent=state.yuuki_money||0;
-    const el=document.getElementById('log-list');
-    if(!state.log||!state.log.length){el.innerHTML='<div class="empty-log">まだ記録がありません</div>';return;}
-    el.innerHTML=[...state.log].reverse().slice(0,14).map(l=>{
-      const name=l.kid==='yuwa'?'ゆうわ':'ゆうき';
-      const isConvert=l.type==='convert'||l.type==='auto_convert';
-      const isInterest=l.type==='money_interest';
-      const dotClass=isConvert||isInterest?'money':l.kid;
-      const deltaClass=isConvert||isInterest?'yen':l.delta>=0?'plus':'minus';
-      const deltaText=isConvert?'+'+l.yen+'円':isInterest?'+'+l.yen+'円':((l.delta>=0?'+':'')+l.delta+'分');
-      return '<div class="log-item"><div class="log-dot '+dotClass+'"></div><div class="log-text">'+name+' '+l.label+'</div><div class="log-delta '+deltaClass+'">'+deltaText+'</div><div class="log-ts">'+l.ts+'</div></div>';
+  function render() {
+    document.getElementById('yuwa-time').textContent = state.yuwa;
+    document.getElementById('yuuki-time').textContent = state.yuuki;
+    document.getElementById('yuwa-money').textContent = state.yuwa_money || 0;
+    document.getElementById('yuuki-money').textContent = state.yuuki_money || 0;
+    renderFixed();
+    const el = document.getElementById('log-list');
+    if (!state.log || !state.log.length) { el.innerHTML = '<div class="empty-log">まだ記録がありません</div>'; return; }
+    el.innerHTML = [...state.log].reverse().slice(0, 14).map(l => {
+      const name = l.kid === 'yuwa' ? 'ゆうわ' : 'ゆうき';
+      const isConvert = l.type === 'convert' || l.type === 'auto_convert';
+      const isInterest = l.type === 'money_interest';
+      const isFixed = l.type === 'fixed_deposit';
+      const isMature = l.type === 'fixed_mature';
+      const dotClass = isConvert || isInterest ? 'money' : (isFixed || isMature) ? 'fixed' : l.kid;
+      const deltaClass = isConvert || isInterest ? 'yen' : (isMature) ? 'plus' : isFixed ? 'minus' : l.delta >= 0 ? 'plus' : 'minus';
+      const deltaText = isConvert ? '+' + l.yen + '円' : isInterest ? '+' + l.yen + '円' : ((l.delta >= 0 ? '+' : '') + l.delta + '分');
+      return '<div class="log-item"><div class="log-dot ' + dotClass + '"></div><div class="log-text">' + name + ' ' + l.label + '</div><div class="log-delta ' + deltaClass + '">' + deltaText + '</div><div class="log-ts">' + l.ts + '</div></div>';
     }).join('');
   }
 
-  function initDrum(id,max){
-    const el=document.getElementById(id); if(!el)return;
-    let h=''; for(let i=0;i<=max;i++) h+='<div class="drum-item">'+i+'</div>';
-    el.innerHTML=h;
-  }
-  function getDrumValue(id){
-    const el=document.getElementById(id); if(!el)return 0;
-    const ih=el.querySelector('.drum-item')?el.querySelector('.drum-item').offsetHeight:62;
-    return Math.round(el.scrollTop/ih);
-  }
-  function confirmDrum(kid,type){
-    const mins=getDrumValue(kid+'-'+type+'-tens')*10+getDrumValue(kid+'-'+type+'-ones');
-    if(mins<=0){showToast('0より大きい数を選んでください');return;}
-    changeTime(kid,mins,type);
-  }
-  ['yuwa','yuuki'].forEach(k=>['add','use'].forEach(t=>{initDrum(k+'-'+t+'-tens',9);initDrum(k+'-'+t+'-ones',9);}));
+  // ===== 定期預金レンダリング =====
+  function renderFixed() {
+    if (!state.yuuki_fixed) state.yuuki_fixed = [];
+    const lots = state.yuuki_fixed;
+    const today = todayStr();
+    const totalMins = lots.reduce((sum, l) => sum + l.currentMins, 0);
+    document.getElementById('fixed-total-badge').textContent = totalMins + '分 預中';
 
-  function initConvertDrum(id,max){
-    const el=document.getElementById(id); if(!el)return;
-    let h=''; for(let i=0;i<=max;i++) h+='<div class="drum-item">'+i+'</div>';
-    el.innerHTML=h;
+    const el = document.getElementById('fixed-lot-list');
+    if (!lots.length) {
+      el.innerHTML = '<div class="fixed-empty">まだ定期預金はありません</div>';
+      return;
+    }
+    el.innerHTML = lots.map((lot, idx) => {
+      const elapsed = Math.max(0, daysBetween(lot.startDate, today));
+      const remain = Math.max(0, FIXED_LOCK_DAYS - elapsed);
+      const pct = Math.min(100, Math.round((elapsed / FIXED_LOCK_DAYS) * 100));
+      const isMature = elapsed >= FIXED_LOCK_DAYS;
+      const gain = lot.currentMins - lot.startMins;
+      return `
+        <div class="fixed-lot${isMature ? ' fixed-lot-mature' : ''}">
+          <div class="fixed-lot-top">
+            <span class="fixed-lot-badge">${isMature ? '✅ 満期' : '🔒 ロット' + (idx + 1)}</span>
+            <div style="text-align:right">
+              <span class="fixed-lot-current">${lot.currentMins}</span><span class="fixed-lot-current-unit">分</span>
+            </div>
+          </div>
+          <div class="fixed-lot-meta">スタート ${lot.startMins}分 → 現在 ${lot.currentMins}分（+${gain}分 増えた！）</div>
+          <div class="fixed-lot-progress"><div class="fixed-lot-fill" style="width:${pct}%"></div></div>
+          <div class="fixed-lot-days">
+            <span>📅 ${lot.startDate} 開始</span>
+            <span>${elapsed}日経過 / <span class="days-remain">${isMature ? '満期！' : '残り' + remain + '日'}</span></span>
+          </div>
+        </div>`;
+    }).join('');
   }
-  function getConvertDrumValue(id){
-    const el=document.getElementById(id); if(!el)return 0;
-    const ih=el.querySelector('.drum-item')?el.querySelector('.drum-item').offsetHeight:62;
-    return Math.round(el.scrollTop/ih);
-  }
-  function toggleConvert(kid){
-    const picker=document.getElementById(kid+'-convert-picker');
-    const btn=document.getElementById(kid+'-convert-toggle');
-    const isVisible=picker.classList.contains('visible');
-    picker.classList.toggle('visible',!isVisible);
-    btn.classList.toggle('active',!isVisible);
-    if(!isVisible){ initConvertDrum(kid+'-conv-tens',99); initConvertDrum(kid+'-conv-ones',9); }
-  }
-  function confirmConvert(kid){
-    const tens=getConvertDrumValue(kid+'-conv-tens');
-    const ones=getConvertDrumValue(kid+'-conv-ones');
-    const mins=tens*10+ones;
-    if(mins<=0){showToast('0より大きい時間を選んでください');return;}
-    if(mins>state[kid]){showToast('時間が足りません！（残り'+state[kid]+'分）');return;}
-    state[kid]-=mins;
-    state[kid+'_money']=(state[kid+'_money']||0)+mins;
-    state.log.push({kid,label:'💴 お小遣い変換',delta:-mins,ts:nowTs(),type:'convert',yen:mins});
-    if(state.log.length>100) state.log.shift();
-    showToast((kid==='yuwa'?'ゆうわ':'ゆうき')+' '+mins+'分 → '+mins+'円 💴');
-    document.getElementById(kid+'-convert-picker').classList.remove('visible');
-    document.getElementById(kid+'-convert-toggle').classList.remove('active');
+
+  // ===== 定期預金追加 =====
+  function addFixed(mins) {
+    if (!loaded) { showToast('読み込み中...'); return; }
+    if (state.yuuki < mins) { showToast('時間が足りません！（残り' + state.yuuki + '分）'); return; }
+    state.yuuki -= mins;
+    if (!state.yuuki_fixed) state.yuuki_fixed = [];
+    const lot = { id: Date.now(), startMins: mins, currentMins: mins, startDate: todayStr() };
+    state.yuuki_fixed.push(lot);
+    state.log.push({ kid: 'yuuki', label: '🏦 定期預金 (' + mins + '分)', delta: -mins, ts: nowTs(), type: 'fixed_deposit' });
+    if (state.log.length > 100) state.log = state.log.slice(-100);
+    showToast('🏦 ゆうき ' + mins + '分を定期預金に預けました！');
     saveToDB(); render();
   }
 
-  function selectTab(kid,tab){
-    state.activeTab[kid]=state.activeTab[kid]===tab?null:tab;
-    ['add','use'].forEach(t=>{
-      document.getElementById(kid+'-'+t+'-tab').classList.toggle('active',state.activeTab[kid]===t);
-      document.getElementById(kid+'-'+t+'-picker').classList.toggle('visible',state.activeTab[kid]===t);
+  let fixedDrumOpen = false;
+  function toggleFixedDrum() {
+    fixedDrumOpen = !fixedDrumOpen;
+    const area = document.getElementById('fixed-drum-area');
+    const btn = document.getElementById('fixed-drum-toggle');
+    area.classList.toggle('visible', fixedDrumOpen);
+    btn.classList.toggle('active', fixedDrumOpen);
+    if (fixedDrumOpen) {
+      initFixedDrum('fixed-drum-tens', 9);
+      initFixedDrum('fixed-drum-ones', 9);
+    }
+  }
+  function initFixedDrum(id, max) {
+    const el = document.getElementById(id); if (!el) return;
+    let h = ''; for (let i = 0; i <= max; i++) h += '<div class="drum-item">' + i + '</div>';
+    el.innerHTML = h;
+  }
+  function getFixedDrumValue(id) {
+    const el = document.getElementById(id); if (!el) return 0;
+    const ih = el.querySelector('.drum-item') ? el.querySelector('.drum-item').offsetHeight : 54;
+    return Math.round(el.scrollTop / ih);
+  }
+  function confirmFixedDrum() {
+    const mins = getFixedDrumValue('fixed-drum-tens') * 10 + getFixedDrumValue('fixed-drum-ones');
+    if (mins <= 0) { showToast('0より大きい数を選んでください'); return; }
+    addFixed(mins);
+    fixedDrumOpen = false;
+    document.getElementById('fixed-drum-area').classList.remove('visible');
+    document.getElementById('fixed-drum-toggle').classList.remove('active');
+  }
+
+  function initDrum(id, max) {
+    const el = document.getElementById(id); if (!el) return;
+    let h = ''; for (let i = 0; i <= max; i++) h += '<div class="drum-item">' + i + '</div>';
+    el.innerHTML = h;
+  }
+  function getDrumValue(id) {
+    const el = document.getElementById(id); if (!el) return 0;
+    const ih = el.querySelector('.drum-item') ? el.querySelector('.drum-item').offsetHeight : 62;
+    return Math.round(el.scrollTop / ih);
+  }
+  function confirmDrum(kid, type) {
+    const mins = getDrumValue(kid + '-' + type + '-tens') * 10 + getDrumValue(kid + '-' + type + '-ones');
+    if (mins <= 0) { showToast('0より大きい数を選んでください'); return; }
+    changeTime(kid, mins, type);
+  }
+  ['yuwa', 'yuuki'].forEach(k => ['add', 'use'].forEach(t => { initDrum(k + '-' + t + '-tens', 9); initDrum(k + '-' + t + '-ones', 9); }));
+
+  function initConvertDrum(id, max) {
+    const el = document.getElementById(id); if (!el) return;
+    let h = ''; for (let i = 0; i <= max; i++) h += '<div class="drum-item">' + i + '</div>';
+    el.innerHTML = h;
+  }
+  function getConvertDrumValue(id) {
+    const el = document.getElementById(id); if (!el) return 0;
+    const ih = el.querySelector('.drum-item') ? el.querySelector('.drum-item').offsetHeight : 62;
+    return Math.round(el.scrollTop / ih);
+  }
+  function toggleConvert(kid) {
+    const picker = document.getElementById(kid + '-convert-picker');
+    const btn = document.getElementById(kid + '-convert-toggle');
+    const isVisible = picker.classList.contains('visible');
+    picker.classList.toggle('visible', !isVisible);
+    btn.classList.toggle('active', !isVisible);
+    if (!isVisible) { initConvertDrum(kid + '-conv-tens', 99); initConvertDrum(kid + '-conv-ones', 9); }
+  }
+  function confirmConvert(kid) {
+    const tens = getConvertDrumValue(kid + '-conv-tens');
+    const ones = getConvertDrumValue(kid + '-conv-ones');
+    const mins = tens * 10 + ones;
+    if (mins <= 0) { showToast('0より大きい時間を選んでください'); return; }
+    if (mins > state[kid]) { showToast('時間が足りません！（残り' + state[kid] + '分）'); return; }
+    state[kid] -= mins;
+    state[kid + '_money'] = (state[kid + '_money'] || 0) + mins;
+    state.log.push({ kid, label: '💴 お小遣い変換', delta: -mins, ts: nowTs(), type: 'convert', yen: mins });
+    if (state.log.length > 100) state.log.shift();
+    showToast((kid === 'yuwa' ? 'ゆうわ' : 'ゆうき') + ' ' + mins + '分 → ' + mins + '円 💴');
+    document.getElementById(kid + '-convert-picker').classList.remove('visible');
+    document.getElementById(kid + '-convert-toggle').classList.remove('active');
+    saveToDB(); render();
+  }
+
+  function selectTab(kid, tab) {
+    state.activeTab[kid] = state.activeTab[kid] === tab ? null : tab;
+    ['add', 'use'].forEach(t => {
+      document.getElementById(kid + '-' + t + '-tab').classList.toggle('active', state.activeTab[kid] === t);
+      document.getElementById(kid + '-' + t + '-picker').classList.toggle('visible', state.activeTab[kid] === t);
     });
   }
 
-  function changeTime(kid,mins,type){
-    if(type==='use'){
-      if(state[kid]<mins){showToast('時間が足りません！');return;}
-      state[kid]-=mins; state.log.push({kid,label:'ゲーム',delta:-mins,ts:nowTs()});
-      showToast((kid==='yuwa'?'ゆうわ':'ゆうき')+' −'+mins+'分 🎮');
+  function changeTime(kid, mins, type) {
+    if (type === 'use') {
+      if (state[kid] < mins) { showToast('時間が足りません！'); return; }
+      state[kid] -= mins; state.log.push({ kid, label: 'ゲーム', delta: -mins, ts: nowTs() });
+      showToast((kid === 'yuwa' ? 'ゆうわ' : 'ゆうき') + ' −' + mins + '分 🎮');
     } else {
-      state[kid]+=mins; state.log.push({kid,label:'追加',delta:mins,ts:nowTs()});
-      showToast((kid==='yuwa'?'ゆうわ':'ゆうき')+' +'+mins+'分 ⭐');
+      state[kid] += mins; state.log.push({ kid, label: '追加', delta: mins, ts: nowTs() });
+      showToast((kid === 'yuwa' ? 'ゆうわ' : 'ゆうき') + ' +' + mins + '分 ⭐');
     }
-    if(state.log.length>100) state.log.shift();
+    if (state.log.length > 100) state.log.shift();
     saveToDB(); render();
   }
 
-  function showToast(msg){
-    const t=document.getElementById('toast');
-    t.textContent=msg; t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'),2500);
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
   }
 
   loadFromDB();
