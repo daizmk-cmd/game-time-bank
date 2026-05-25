@@ -313,6 +313,21 @@
           </div>
         </div>
       </div>
+      <!-- 定期預金セクション（ゆうわ） -->
+      <div class="fixed-inner">
+        <div class="fixed-inner-head">
+          <span class="fixed-inner-title">🏦 定期預金</span>
+          <span class="fixed-compound-badge">×1.2倍 複利中</span>
+          <span class="fixed-inner-total" id="yuwa-fixed-total-disp">計 0分</span>
+        </div>
+        <div class="fixed-lot-list" id="yuwa-fixed-lot-list">
+          <div class="fixed-lot-empty">まだ定期預金はありません</div>
+        </div>
+        <div class="fixed-deposit-bar">
+          <button class="fdb-preset" onclick="addFixed('yuwa',30)">30分</button>
+          <button class="fdb-preset" onclick="addFixed('yuwa',60)">60分</button>
+        </div>
+      </div>
     </div>
 
     <!-- ===== ゆうきカード（定期預金込み） ===== -->
@@ -364,19 +379,19 @@
         </div>
       </div>
 
-      <!-- 定期預金セクション（カード内） -->
+      <!-- 定期預金セクション（ゆうき） -->
       <div class="fixed-inner">
         <div class="fixed-inner-head">
           <span class="fixed-inner-title">🏦 定期預金</span>
           <span class="fixed-compound-badge">×1.5倍 複利中</span>
-          <span class="fixed-inner-total" id="fixed-total-disp">計 0分</span>
+          <span class="fixed-inner-total" id="yuuki-fixed-total-disp">計 0分</span>
         </div>
-        <div class="fixed-lot-list" id="fixed-lot-list">
+        <div class="fixed-lot-list" id="yuuki-fixed-lot-list">
           <div class="fixed-lot-empty">まだ定期預金はありません</div>
         </div>
         <div class="fixed-deposit-bar">
-          <button class="fdb-preset" onclick="addFixed(30)">30分</button>
-          <button class="fdb-preset" onclick="addFixed(60)">60分</button>
+          <button class="fdb-preset" onclick="addFixed('yuuki',30)">30分</button>
+          <button class="fdb-preset" onclick="addFixed('yuuki',60)">60分</button>
           <button class="fdb-main-btn" onclick="addFixed(0)" style="display:none"></button>
         </div>
       </div>
@@ -401,7 +416,7 @@
 
   let state = {
     yuwa: 0, yuuki: 0, yuwa_money: 0, yuuki_money: 0,
-    yuuki_fixed: [],
+    yuwa_fixed: [], yuuki_fixed: [],
     log: [], lastOpenedDate: todayStr(),
     activeTab: { yuwa: null, yuuki: null }
   };
@@ -434,6 +449,7 @@
     state.yuwa_money = src.yuwa_money || 0;
     state.yuuki_money = src.yuuki_money || 0;
     state.yuuki_fixed = src.yuuki_fixed || [];
+    state.yuwa_fixed = src.yuwa_fixed || [];
     state.log = src.log || [];
     state.lastOpenedDate = src.lastOpenedDate || todayStr();
     state.activeTab = src.activeTab || { yuwa: null, yuuki: null };
@@ -522,16 +538,31 @@
     if (dmy > 0) state.log.push({ kid: 'yuwa', label: '💰 お小遣い複利+3% (' + days + '日分)', delta: 0, ts, type: 'money_interest', yen: dmy });
     if (dmk > 0) state.log.push({ kid: 'yuuki', label: '💰 お小遣い複利+3% (' + days + '日分)', delta: 0, ts, type: 'money_interest', yen: dmk });
 
-    // 定期預金複利 & 満期チェック
+    // 定期預金複利 & 満期チェック（ゆうき ×1.5）
     if (!state.yuuki_fixed) state.yuuki_fixed = [];
-    let maturedTotal = 0;
+    let maturedK = 0;
     state.yuuki_fixed = state.yuuki_fixed.filter(lot => {
       for (let i = 0; i < days; i++) lot.currentMins = ceilTo5(lot.currentMins * 1.5);
       const elapsed = daysBetween(lot.startDate, today);
       if (elapsed >= FIXED_LOCK_DAYS) {
         state.yuuki += lot.currentMins;
-        maturedTotal += lot.currentMins;
+        maturedK += lot.currentMins;
         state.log.push({ kid: 'yuuki', label: '🎉 定期満期！通常預金に移行 (スタート' + lot.startMins + '分)', delta: lot.currentMins, ts, type: 'fixed_mature' });
+        return false;
+      }
+      return true;
+    });
+
+    // 定期預金複利 & 満期チェック（ゆうわ ×1.2）
+    if (!state.yuwa_fixed) state.yuwa_fixed = [];
+    let maturedY = 0;
+    state.yuwa_fixed = state.yuwa_fixed.filter(lot => {
+      for (let i = 0; i < days; i++) lot.currentMins = ceilTo5(lot.currentMins * 1.2);
+      const elapsed = daysBetween(lot.startDate, today);
+      if (elapsed >= FIXED_LOCK_DAYS) {
+        state.yuwa += lot.currentMins;
+        maturedY += lot.currentMins;
+        state.log.push({ kid: 'yuwa', label: '🎉 定期満期！通常預金に移行 (スタート' + lot.startMins + '分)', delta: lot.currentMins, ts, type: 'fixed_mature' });
         return false;
       }
       return true;
@@ -543,7 +574,8 @@
     saveToDB();
 
     let msg = '🌙 ' + days + '日分の複利！ゆうわ +' + dy + '分 ／ ゆうき +' + dk + '分';
-    if (maturedTotal > 0) msg += '　🎉 定期満期 +' + maturedTotal + '分';
+    if (maturedY > 0) msg += '　🎉 ゆうわ定期満期 +' + maturedY + '分';
+    if (maturedK > 0) msg += '　🎉 ゆうき定期満期 +' + maturedK + '分';
     if (dmy > 0) msg += '　ゆうわ お小遣い +' + dmy + '円';
     if (dmk > 0) msg += '　ゆうき +' + dmk + '円';
     const b = document.getElementById('bonus-banner');
@@ -552,48 +584,46 @@
 
   // ===== 定期預金レンダリング =====
   function renderFixed() {
-    if (!state.yuuki_fixed) state.yuuki_fixed = [];
-    const lots = state.yuuki_fixed;
-    const today = todayStr();
-    const total = lots.reduce((s, l) => s + l.currentMins, 0);
-    document.getElementById('fixed-total-disp').textContent = '計 ' + total + '分';
-
-    const el = document.getElementById('fixed-lot-list');
-    if (!lots.length) {
-      el.innerHTML = '<div class="fixed-lot-empty">まだ定期預金はありません</div>';
-      return;
-    }
-    el.innerHTML = lots.map(lot => {
-      const elapsed = Math.max(0, daysBetween(lot.startDate, today));
-      const remain = Math.max(0, FIXED_LOCK_DAYS - elapsed);
-      const pct = Math.min(100, Math.round(elapsed / FIXED_LOCK_DAYS * 100));
-      const isMature = elapsed >= FIXED_LOCK_DAYS;
-      return `<div class="fixed-lot-card${isMature ? ' mature' : ''}">
-        <div class="flo-top-row">
-          <div class="flo-left">
-            <span class="flo-current">${lot.currentMins}</span><span class="flo-unit">分</span>
-            <div class="flo-meta">スタート ${lot.startMins}分　→　${elapsed}日後</div>
+    ['yuwa', 'yuuki'].forEach(kid => {
+      const key = kid + '_fixed';
+      if (!state[key]) state[key] = [];
+      const lots = state[key];
+      const today = todayStr();
+      const total = lots.reduce((s, l) => s + l.currentMins, 0);
+      document.getElementById(kid + '-fixed-total-disp').textContent = '計 ' + total + '分';
+      const el = document.getElementById(kid + '-fixed-lot-list');
+      if (!lots.length) { el.innerHTML = '<div class="fixed-lot-empty">まだ定期預金はありません</div>'; return; }
+      el.innerHTML = lots.map(lot => {
+        const elapsed = Math.max(0, daysBetween(lot.startDate, today));
+        const remain = Math.max(0, FIXED_LOCK_DAYS - elapsed);
+        const pct = Math.min(100, Math.round(elapsed / FIXED_LOCK_DAYS * 100));
+        const isMature = elapsed >= FIXED_LOCK_DAYS;
+        return `<div class="fixed-lot-card${isMature ? ' mature' : ''}">
+          <div class="flo-top-row">
+            <div class="flo-left">
+              <span class="flo-current">${lot.currentMins}</span><span class="flo-unit">分</span>
+              <div class="flo-meta">スタート ${lot.startMins}分　→　${elapsed}日後</div>
+            </div>
+            <div class="flo-right">
+              <span class="flo-lock-label">${isMature ? '✅ 満期！' : 'ロック解除まで'}</span>
+              <span class="flo-lock-days${isMature ? ' mature' : ''}">${isMature ? '移行中' : 'あと' + remain + '日'}</span>
+            </div>
           </div>
-          <div class="flo-right">
-            <span class="flo-lock-label">${isMature ? '✅ 満期！' : 'ロック解除まで'}</span>
-            <span class="flo-lock-days${isMature ? ' mature' : ''}">${isMature ? '移行中' : 'あと' + remain + '日'}</span>
-          </div>
-        </div>
-        <div class="flo-progress-track"><div class="flo-progress-fill" style="width:${pct}%"></div></div>
-      </div>`;
-    }).join('');
+          <div class="flo-progress-track"><div class="flo-progress-fill" style="width:${pct}%"></div></div>
+        </div>`;
+      }).join('');
+    });
   }
 
-  // ===== 定期追加 =====
-  function addFixed(mins) {
+  // ===== 定期追加（直接追加・通常預金から引き落とさない）=====
+  function addFixed(kid, mins) {
     if (!loaded) { showToast('読み込み中...'); return; }
-    if (state.yuuki < mins) { showToast('時間が足りません！（残り' + state.yuuki + '分）'); return; }
-    state.yuuki -= mins;
-    if (!state.yuuki_fixed) state.yuuki_fixed = [];
-    state.yuuki_fixed.push({ id: Date.now(), startMins: mins, currentMins: mins, startDate: todayStr() });
-    state.log.push({ kid: 'yuuki', label: '🏦 定期預金 (' + mins + '分)', delta: -mins, ts: nowTs(), type: 'fixed_deposit' });
+    const key = kid + '_fixed';
+    if (!state[key]) state[key] = [];
+    state[key].push({ id: Date.now(), startMins: mins, currentMins: mins, startDate: todayStr() });
+    state.log.push({ kid, label: '🏦 定期預金 (' + mins + '分)', delta: mins, ts: nowTs(), type: 'fixed_deposit' });
     if (state.log.length > 100) state.log = state.log.slice(-100);
-    showToast('🏦 ゆうき ' + mins + '分を定期預金に！');
+    showToast('🏦 ' + (kid === 'yuwa' ? 'ゆうわ' : 'ゆうき') + ' ' + mins + '分を定期預金に！');
     saveToDB(); render();
   }
 
