@@ -340,11 +340,19 @@
         <div class="stat-divider"></div>
         <div class="stat-block"><div class="stat-label">💴 お小遣い</div><span class="kid-money" id="yuuki-money">-</span><span class="kid-money-unit">円</span></div>
       </div>
+      <div class="convert-area">
+        <button class="convert-toggle-btn" id="yuuki-convert-toggle" onclick="toggleConvert('yuuki')">💴 お小遣いに変換</button>
+        <div class="convert-picker" id="yuuki-convert-picker">
+          <div class="convert-drum-wrap"><div class="convert-drum-label">百・十の位</div><div class="convert-drum-scroll" id="yuuki-conv-tens"></div></div>
+          <div class="convert-drum-sep">:</div>
+          <div class="convert-drum-wrap"><div class="convert-drum-label">一の位</div><div class="convert-drum-scroll" id="yuuki-conv-ones"></div></div>
+          <button class="convert-confirm-btn" onclick="confirmConvert('yuuki')">💴変換</button>
+        </div>
+      </div>
       <div class="action-area">
         <div class="action-tabs">
           <button class="tab-btn add-tab" id="yuuki-add-tab" onclick="selectTab('yuuki','add')">＋ 追加</button>
           <button class="tab-btn use-tab" id="yuuki-use-tab" onclick="selectTab('yuuki','use')">▶ 使う</button>
-          <button class="tab-btn convert-tab" id="yuuki-convert-tab" onclick="selectTab('yuuki','convert')">💴 変換</button>
         </div>
         <div class="mins-picker add-picker" id="yuuki-add-picker">
           <button class="min-btn" onclick="changeTime('yuuki',5,'add')">5分</button>
@@ -369,13 +377,6 @@
             <div class="drum-wrap"><div class="drum-label">一の位</div><div class="drum-scroll" id="yuuki-use-ones"></div></div>
             <button class="drum-confirm-btn" onclick="confirmDrum('yuuki','use')">▶使う</button>
           </div>
-        </div>
-        <!-- 変換タブパネル（ゆうき専用インライン） -->
-        <div class="convert-picker-inline" id="yuuki-convert-picker">
-          <div class="convert-drum-wrap"><div class="convert-drum-label">百・十の位</div><div class="convert-drum-scroll" id="yuuki-conv-tens"></div></div>
-          <div class="convert-drum-sep">:</div>
-          <div class="convert-drum-wrap"><div class="convert-drum-label">一の位</div><div class="convert-drum-scroll" id="yuuki-conv-ones"></div></div>
-          <button class="convert-confirm-btn" onclick="confirmConvert('yuuki')">💴変換</button>
         </div>
       </div>
 
@@ -657,7 +658,6 @@
   }
 
   function toggleConvert(kid) {
-    // yuwa only
     const picker = document.getElementById(kid + '-convert-picker');
     const btn = document.getElementById(kid + '-convert-toggle');
     const isVisible = picker.classList.contains('visible');
@@ -677,30 +677,19 @@
     state.log.push({ kid, label: '💴 お小遣い変換', delta: -mins, ts: nowTs(), type: 'convert', yen: mins });
     if (state.log.length > 100) state.log.shift();
     showToast((kid === 'yuwa' ? 'ゆうわ' : 'ゆうき') + ' ' + mins + '分 → ' + mins + '円 💴');
-    if (kid === 'yuwa') {
-      document.getElementById('yuwa-convert-picker').classList.remove('visible');
-      document.getElementById('yuwa-convert-toggle').classList.remove('active');
-    } else {
-      state.activeTab.yuuki = null;
-      document.getElementById('yuuki-convert-tab').classList.remove('active');
-      document.getElementById('yuuki-convert-picker').classList.remove('visible');
-    }
+    document.getElementById(kid + '-convert-picker').classList.remove('visible');
+    document.getElementById(kid + '-convert-toggle').classList.remove('active');
     saveToDB(); render();
   }
 
   function selectTab(kid, tab) {
     state.activeTab[kid] = state.activeTab[kid] === tab ? null : tab;
-    const tabs = kid === 'yuuki' ? ['add', 'use', 'convert'] : ['add', 'use'];
-    tabs.forEach(t => {
+    ['add', 'use'].forEach(t => {
       const te = document.getElementById(kid + '-' + t + '-tab');
       const pe = document.getElementById(kid + '-' + t + '-picker');
       if (te) te.classList.toggle('active', state.activeTab[kid] === t);
       if (pe) pe.classList.toggle('visible', state.activeTab[kid] === t);
     });
-    if (kid === 'yuuki' && state.activeTab.yuuki === 'convert') {
-      initConvertDrum('yuuki-conv-tens', 99);
-      initConvertDrum('yuuki-conv-ones', 9);
-    }
   }
 
   function changeTime(kid, mins, type) {
