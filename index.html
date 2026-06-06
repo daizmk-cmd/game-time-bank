@@ -462,10 +462,7 @@
       const r = await fetch(DB + '/.json');
       const data = await r.json();
       if (data) {
-        const fbTime = data._savedAt || 0;
-        const lcTime = local ? (local._savedAt || 0) : 0;
-        mergeState(lcTime > fbTime ? local : data);
-        if (lcTime > fbTime) await saveToDB();
+        mergeState(data);
       } else if (local) {
         mergeState(local);
       }
@@ -487,7 +484,7 @@
     setSyncStatus('syncing');
     saveLocal();
     try {
-      await fetch(DB + '/.json', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...state, _savedAt: Date.now() }) });
+      await fetch(DB + '/.json', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify((() => { const p = { ...state }; delete p._savedAt; return p; })()) });
       setSyncStatus('ok');
     } catch (e) { setSyncStatus('err'); }
     finally { isSaving = false; }
