@@ -110,6 +110,18 @@
 
     /* ===== Log ===== */
     .log-section { background: #fff; border-radius: 20px; box-shadow: 0 2px 14px rgba(0,0,0,0.07); }
+    .rules-section { background: #fff; border-radius: 20px; box-shadow: 0 2px 14px rgba(0,0,0,0.07); margin: 0 20px 16px; padding: 20px 24px; }
+    .rules-title { font-size: 16px; font-weight: 900; color: #333; margin-bottom: 14px; }
+    .rules-list { display: flex; flex-direction: column; gap: 10px; }
+    .rule-item { display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; border-radius: 12px; }
+    .rule-item.blue  { background: #eff6ff; }
+    .rule-item.green { background: #f0fdf4; }
+    .rule-item.amber { background: #fffbeb; }
+    .rule-item.red   { background: #fff1f2; }
+    .rule-icon { font-size: 22px; flex-shrink: 0; line-height: 1.3; }
+    .rule-body { display: flex; flex-direction: column; gap: 2px; }
+    .rule-head { font-size: 14px; font-weight: 900; color: #1e293b; }
+    .rule-desc { font-size: 12px; font-weight: 600; color: #64748b; line-height: 1.5; }
     .log-title { font-weight: 900; color: #aaa; text-transform: uppercase; letter-spacing: 0.8px; }
     .log-item { display: flex; align-items: center; gap: 8px; border-bottom: 0.5px solid #f0f0f0; }
     .log-item:last-child { border-bottom: none; }
@@ -227,6 +239,10 @@
       .drum-sep { font-size: 21px; padding-bottom: 8px; }
       .drum-confirm-btn { height: 54px; padding: 0 11px; font-size: 13px; }
       .log-section { margin: 8px 14px 24px; border-radius: 16px; padding: 14px 16px; }
+      .rules-section { margin: 0 14px 14px; padding: 16px 16px; border-radius: 16px; }
+      .rule-item { padding: 10px 12px; }
+      .rule-head { font-size: 13px; }
+      .rule-desc { font-size: 11px; }
       .log-title { font-size: 11px; margin-bottom: 8px; }
       .log-item { font-size: 13px; padding: 7px 0; gap: 8px; }
       .log-dot { width: 7px; height: 7px; }
@@ -258,7 +274,7 @@
 <div id="app">
   <div class="header">
     <h1>🎮 Game Time Bank</h1>
-    <p>ゆうわ ×1.2倍 ／ ゆうき ×1.5倍（毎日自動・5分単位切り上げ）</p>
+    <p>ゆうわ・ゆうき ×1.2倍／日（定期預金のみ・上限60分・5分単位切り上げ）</p>
     <button class="reload-btn" onclick="location.reload()">🔄</button>
   </div>
   <div class="bonus-applied" id="bonus-banner"></div>
@@ -334,7 +350,7 @@
     <div class="kid-card yuuki">
       <div class="card-bg-icon">🌟</div>
       <div class="kid-name">ゆうき</div>
-      <div class="kid-multiplier">毎晩 ×1.5</div><br>
+      <div class="kid-multiplier">毎晩 ×1.2</div><br>
       <div class="kid-stats">
         <div class="stat-block"><div class="stat-label">⏱ ゲーム時間</div><span class="kid-time" id="yuuki-time">-</span><span class="kid-time-unit">分</span></div>
         <div class="stat-divider"></div>
@@ -384,7 +400,7 @@
       <div class="fixed-inner">
         <div class="fixed-inner-head">
           <span class="fixed-inner-title">🏦 定期預金</span>
-          <span class="fixed-compound-badge">×1.5倍 複利中</span>
+          <span class="fixed-compound-badge">×1.2倍 複利中</span>
           <span class="fixed-inner-total" id="yuuki-fixed-total-disp">計 0分</span>
         </div>
         <div class="fixed-lot-list" id="yuuki-fixed-lot-list">
@@ -400,6 +416,40 @@
 
   </div><!-- /cards-grid -->
 
+  <div class="rules-section">
+    <div class="rules-title">📖 ゲームタイムバンク　ルール</div>
+    <div class="rules-list">
+      <div class="rule-item blue">
+        <div class="rule-icon">⏱️</div>
+        <div class="rule-body">
+          <div class="rule-head">ゲーム時間は750分までためられる</div>
+          <div class="rule-desc">750分をこえた分は、自動でお小遣いに変わるよ。1分 ＝ 1円！</div>
+        </div>
+      </div>
+      <div class="rule-item green">
+        <div class="rule-icon">🏦</div>
+        <div class="rule-body">
+          <div class="rule-head">定期預金に入れると1.2倍に増える</div>
+          <div class="rule-desc">30分か60分を定期預金へ。毎日×1.2倍ずつ増えて、7日後に自動でゲーム時間にもどってくる！<br>例）60分 → 7日後 約215分になる✨</div>
+        </div>
+      </div>
+      <div class="rule-item amber">
+        <div class="rule-icon">💴</div>
+        <div class="rule-body">
+          <div class="rule-head">定期預金は合計60分まで</div>
+          <div class="rule-desc">いちどに預けられるのは合計60分まで。30分×2回 か 60分×1回だよ。</div>
+        </div>
+      </div>
+      <div class="rule-item red">
+        <div class="rule-icon">🔒</div>
+        <div class="rule-body">
+          <div class="rule-head">お小遣いになったらゲーム時間にはもどせない</div>
+          <div class="rule-desc">お小遣いは使うだけ。ゲーム時間にはもどせないよ。大切に使おう！</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="log-section">
     <div class="log-title">📋 履歴</div>
     <div id="log-list"><div class="empty-log">読み込み中...</div></div>
@@ -410,8 +460,6 @@
 
 <script>
   const DB = 'https://game-time-bank-default-rtdb.asia-southeast1.firebasedatabase.app';
-  const MAX_MINS = 560;
-  const KEEP_MINS = 60;
   const FIXED_LOCK_DAYS = 7;
   const LS_KEY = 'gamebank_backup';
 
@@ -457,20 +505,18 @@
   }
 
   async function loadFromDB() {
-    const local = loadLocal();
     try {
       const r = await fetch(DB + '/.json');
       const data = await r.json();
       if (data) {
         mergeState(data);
-      } else if (local) {
-        mergeState(local);
       }
       loaded = true;
       applyMissedDays();
       render();
       setSyncStatus('ok');
     } catch (e) {
+      const local = loadLocal();
       if (local) mergeState(local);
       loaded = true;
       applyMissedDays();
@@ -491,25 +537,23 @@
   }
 
   function startStream() {
-    try {
-      const es = new EventSource(DB + '/.json?accept=text/event-stream');
-      es.addEventListener('put', e => {
-        if (isSaving) return;
-        try {
-          const d = JSON.parse(e.data);
-          if (d.data && loaded) { mergeState(d.data); render(); }
-        } catch (err) { }
-      });
-      es.onerror = () => setSyncStatus('err');
-    } catch (e) { }
+    setInterval(async () => {
+      if (isSaving) return;
+      try {
+        const r = await fetch(DB + '/.json');
+        const data = await r.json();
+        if (data && loaded) { mergeState(data); render(); setSyncStatus('ok'); }
+      } catch (e) { setSyncStatus('err'); }
+    }, 15000);
   }
 
   function autoConvertIfOver(kid) {
-    if (state[kid] > MAX_MINS) {
-      const cv = state[kid] - KEEP_MINS;
-      state[kid] = KEEP_MINS;
+    const LIMIT = 750;
+    if (state[kid] > LIMIT) {
+      const cv = state[kid] - LIMIT;
+      state[kid] = LIMIT;
       state[kid + '_money'] = (state[kid + '_money'] || 0) + cv;
-      state.log.push({ kid, label: '🔁 上限超過→お小遣い変換', delta: -cv, ts: nowTs(), type: 'auto_convert', yen: cv });
+      state.log.push({ kid, label: '🔁 750分超過→お小遣い自動変換', delta: -cv, ts: nowTs(), type: 'auto_convert', yen: cv });
       return cv;
     }
     return 0;
@@ -520,27 +564,13 @@
     const days = daysBetween(state.lastOpenedDate, today);
     if (days <= 0) return;
 
-    // 通常複利
-    const py = state.yuwa, pk = state.yuuki;
-    const pmy = state.yuwa_money || 0, pmk = state.yuuki_money || 0;
-    for (let i = 0; i < days; i++) {
-      state.yuwa = ceilTo5(state.yuwa * 1.2);
-      state.yuuki = ceilTo5(state.yuuki * 1.5);
-      if ((state.yuwa_money || 0) > 0) state.yuwa_money = Math.ceil((state.yuwa_money || 0) * 1.03);
-      if ((state.yuuki_money || 0) > 0) state.yuuki_money = Math.ceil((state.yuuki_money || 0) * 1.03);
-    }
-    const dy = state.yuwa - py, dk = state.yuuki - pk, ts = nowTs();
-    const dmy = (state.yuwa_money || 0) - pmy, dmk = (state.yuuki_money || 0) - pmk;
-    if (dy > 0) state.log.push({ kid: 'yuwa', label: '🌙 複利×1.2 (' + days + '日分)', delta: dy, ts });
-    if (dk > 0) state.log.push({ kid: 'yuuki', label: '🌙 複利×1.5 (' + days + '日分)', delta: dk, ts });
-    if (dmy > 0) state.log.push({ kid: 'yuwa', label: '💰 お小遣い複利+3% (' + days + '日分)', delta: 0, ts, type: 'money_interest', yen: dmy });
-    if (dmk > 0) state.log.push({ kid: 'yuuki', label: '💰 お小遣い複利+3% (' + days + '日分)', delta: 0, ts, type: 'money_interest', yen: dmk });
+    const ts = nowTs();
 
-    // 定期預金複利 & 満期チェック（ゆうき ×1.5）
+    // 定期預金複利 & 満期チェック（ゆうき ×1.2）
     if (!state.yuuki_fixed) state.yuuki_fixed = [];
     let maturedK = 0;
     state.yuuki_fixed = state.yuuki_fixed.filter(lot => {
-      for (let i = 0; i < days; i++) lot.currentMins = ceilTo5(lot.currentMins * 1.5);
+      for (let i = 0; i < days; i++) lot.currentMins = ceilTo5(lot.currentMins * 1.2);
       const elapsed = daysBetween(lot.startDate, today);
       if (elapsed >= FIXED_LOCK_DAYS) {
         state.yuuki += lot.currentMins;
@@ -571,10 +601,9 @@
     state.lastOpenedDate = today;
     saveToDB();
 
-    let msg = '🌙 ' + days + '日分の複利！ゆうわ +' + dy + '分 ／ ゆうき +' + dk + '分';
-    if (maturedY > 0) msg += '　🎉 ゆうわ定期満期 +' + maturedY + '分';
-    if (maturedK > 0) msg += '　🎉 ゆうき定期満期 +' + maturedK + '分';
-    if (dmy > 0) msg += '　ゆうわ お小遣い +' + dmy + '円';
+    let msg = '';
+    if (maturedY > 0) msg += '🎉 ゆうわ定期満期 +' + maturedY + '分　';
+    if (maturedK > 0) msg += '🎉 ゆうき定期満期 +' + maturedK + '分　';
     if (dmk > 0) msg += '　ゆうき +' + dmk + '円';
     const b = document.getElementById('bonus-banner');
     b.textContent = msg; b.classList.add('show'); setTimeout(() => b.classList.remove('show'), 6000);
@@ -616,10 +645,15 @@
   // ===== 定期追加（直接追加・通常預金から引き落とさない）=====
   function addFixed(kid, mins) {
     if (!loaded) { showToast('読み込み中...'); return; }
+    if (mins > 60) { showToast('定期預金は最大60分まで！'); return; }
+    if (state[kid] < mins) { showToast('ゲーム時間が足りません！'); return; }
     const key = kid + '_fixed';
     if (!state[key]) state[key] = [];
+    const totalFixed = state[key].reduce((s, l) => s + l.startMins, 0);
+    if (totalFixed + mins > 60) { showToast('定期預金の合計は60分まで！'); return; }
+    state[kid] -= mins;
     state[key].push({ id: Date.now(), startMins: mins, currentMins: mins, startDate: todayStr() });
-    state.log.push({ kid, label: '🏦 定期預金 (' + mins + '分)', delta: mins, ts: nowTs(), type: 'fixed_deposit' });
+    state.log.push({ kid, label: '🏦 定期預金 (' + mins + '分)', delta: -mins, ts: nowTs(), type: 'fixed_deposit' });
     if (state.log.length > 100) state.log = state.log.slice(-100);
     showToast('🏦 ' + (kid === 'yuwa' ? 'ゆうわ' : 'ゆうき') + ' ' + mins + '分を定期預金に！');
     saveToDB(); render();
